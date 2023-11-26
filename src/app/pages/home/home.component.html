@@ -1,0 +1,48 @@
+<div class="h-screen w-full relative">
+  <img class="h-full w-full object-cover" src="assets/img/Portada.webp" alt="">
+  <div class="absolute top-0 left-0 h-full w-full flex flex-col justify-center p-10"
+    style="background-color: rgba(0, 0, 0, 0.4);">
+    <div class="w-[500px]">
+
+      <h1 class="text-5xl font-bold" style="margin-bottom: 70px;">Hola, me llamo Juan <br>un excelente
+        <span class="text-secondary-content block cd-headline rotate-1">
+          <span class="cd-words-wrapper" style="width: 300px;">
+            <b class="is-visible" [ngClass]="{'is-visible': interval == 0, 'is-hidden':interval != 0}">Desarrollador
+              Web</b>
+            @defer (on timer(2500)) {
+
+            <b class="is-hidden" [ngClass]="{'is-visible': interval == 1, 'is-hidden':interval != 1}">Jugador</b>
+            }
+            @defer (on timer(5000)) {
+
+            <b class="is-hidden" [ngClass]="{'is-visible': interval == 2, 'is-hidden':interval != 2}">Humano</b>
+            }
+          </span>
+        </span>
+      </h1>
+      <p>Me considero un apasionado desarrollador web fullstack, comprometido en crear soluciones
+        innovadoras que
+        satisfagan las
+        necesidades de diversos públicos. Mi enfoque se centra en desarrollar herramientas, aplicaciones y servicios que
+        sean
+        verdaderamente útiles y efectivos. Mi proceso de trabajo se caracteriza por la creatividad, ya que me encanta
+        encontrar
+        formas originales de abordar los desafíos técnicos. Además, disfruto de la integración de diversas herramientas
+        y
+        tecnologías para potenciar la funcionalidad y el rendimiento de los productos que desarrollo.</p>
+      <a href="https://wa.me/573196458411" target="_blank" class="btn btn-success mt-5 w-2/6"> Contáctame <i
+          class="fas fa-chevron-right me-3"></i></a>
+    </div>
+  </div>
+</div>
+<div class="h-screen w-full p-10">
+
+  <h2 class="text-2xl font-semibold text-secondary-content">Mis proyectos</h2>
+
+  <div class="flex my-20 gap-x-8 gap-y-20 flex-wrap">
+    @for (item of proyectos;let i = $index; track i) {
+    <app-card-proyecto [proyecto]="item"></app-card-proyecto>
+    }
+  </div>
+
+</div>

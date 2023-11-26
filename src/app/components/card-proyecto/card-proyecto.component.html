@@ -1,0 +1,32 @@
+<div class="w-[330px] h-[340px] relative bg-neutral rounded p-5 flex flex-col justify-between">
+
+  <div class="bg-white w-[70px] h-[70px] absolute rounded" style="top: -35px; left: 40px;">
+    <img [src]="proyecto.icon" class="w-[70px] h-[70px] object-cover" alt="icon">
+  </div>
+
+
+
+  <div class="my-6">
+
+    <h1 class="text-xl text-white ">
+      {{proyecto.nombre}}
+    </h1>
+
+    <p class="text-neutral-content mt-3">{{proyecto.descripcion}}</p>
+  </div>
+  <div>
+    <div class="flex gap-1">
+
+      @for ( t of proyecto.tecnologias;let i = $index; track i) {
+      <div class="animate__animated  tooltip tooltip-primary rounded-full w-8 h-8 p-1 flex justify-center items-center"
+        [ngClass]="{'animate__tada': interval == i}" [attr.data-tip]="t.nombre">
+        <img [src]="t.link" class="w-full h-auto" alt="">
+      </div>
+      }
+
+    </div>
+    <a [href]="proyecto.link" target="_blank" class="btn btn-success mt-3"> Visitar sitio web <i
+        class="fas fa-chevron-right me-3"></i> </a>
+  </div>
+
+</div>
