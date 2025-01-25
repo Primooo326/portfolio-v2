@@ -35,14 +35,18 @@
     </div>
   </div>
 </div>
-<div class="h-screen w-full p-10">
+<div class=" w-full p-10 flex justify-center flex-col row-0">
 
-  <h2 class="text-2xl font-semibold text-secondary-content">Mis proyectos</h2>
+  <h2 class="text-4xl font-semibold text-secondary-content text-center">Mis proyectos</h2>
 
-  <div class="flex my-20 gap-x-8 gap-y-20 flex-wrap">
+  <div class="flex justify-around my-20 gap-x-20  gap-y-20 flex-wrap">
     @for (item of proyectos;let i = $index; track i) {
     <app-card-proyecto [proyecto]="item"></app-card-proyecto>
     }
   </div>
 
 </div>
+<!-- <div class="h-screen w-full p-10">
+  <h2 class="text-4xl font-semibold text-secondary-content text-center">Sobre mí</h2>
+
+</div> -->
