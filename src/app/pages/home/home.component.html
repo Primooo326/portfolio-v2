@@ -4,7 +4,7 @@
     style="background-color: rgba(0, 0, 0, 0.4);">
     <div class="lg:w-[500px]">
 
-      <h1 class="lg:text-5xl text-4xl font-bold" style="margin-bottom: 70px;">Hola, me llamo Juan <br>un excelente
+      <h1 class="lg:text-5xl text-3xl font-bold" style="margin-bottom: 70px;">Hola, me llamo Juan <br>un excelente
         <span class="text-secondary-content block cd-headline rotate-1">
           <span class="cd-words-wrapper" style="width: 300px;">
             <b class="is-visible" [ngClass]="{'is-visible': interval == 0, 'is-hidden':interval != 0}">Desarrollador
@@ -52,11 +52,11 @@
     </div>
   </div>
 </div>
-<div class=" w-full p-10 flex justify-center flex-col row-0">
+<div class=" w-full p-10 flex justify-center flex-col space-y-20">
 
   <h2 class="text-4xl font-semibold text-secondary-content text-center">Mis proyectos</h2>
 
-  <div class="flex justify-around my-20 gap-x-20  gap-y-20 flex-wrap">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-28 w-full justify-between items-center">
     @for (item of proyectos;let i = $index; track i) {
     <app-card-proyecto [proyecto]="item"></app-card-proyecto>
     }

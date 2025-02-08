@@ -15,41 +15,85 @@ export class HomeComponent {
 
   proyectos: Proyecto[] = [
     {
-      nombre: "Networking Miami",
-      link: "https://networking.miami",
-      icon: "https://networking.miami/media/logos-miami/logo-morado.png",
-      descripcion: "Una red social sobre conectar personas dentro de Miami según sus intereses, idiomas, profesión y ubicación. Facilitando así conexiones valiosas y oportunidades de networking.",
+      nombre: "Nexus Business TechAssessor",
+      link: "https://nexus-business-techassesor.web.app/",
+      icon: "https://nexus-business-techassesor.web.app/_astro/NBT.Dh4EQEsa_Z2funTE.svg",
+      descripcion: "En Nexus Business TechAsesor, nos enfocamos en ayudar a las pequeñas y medianas empresas a mejorar su presencia en línea, aumentar sus ventas y optimizar sus operaciones mediante soluciones innovadoras y personalizadas.",
       tecnologias: [
         {
-          link: "https://angular.dev/assets/icons/favicon-32x32.png",
-          nombre: "Angular"
+          link: "assets/icons/astro.svg",
+          nombre: "Astro"
         },
         {
-          link: "https://nodejs.org/static/images/favicons/favicon.png",
+          link: "assets/icons/cloudflare.svg",
+          nombre: "Cloudflare"
+        },
+      ]
+    },
+    {
+      nombre: "Oberon 360",
+      link: "https://oberon360.eastus.cloudapp.azure.com/auth",
+      icon: "https://oberon360.eastus.cloudapp.azure.com/favicon.ico",
+      descripcion: "Aplicativo web para la gestión de clientes, proveedores, productos, tracking de flotas, gestión de personal. Integrado con reconocimiento facial, gps, inteligencia artificial, analitica de datos, entre otros.",
+      tecnologias: [
+        {
+          link: "assets/icons/nextjs.svg",
+          nombre: "Next Js"
+        },
+        {
+          link: "assets/icons/nestjs.svg",
+          nombre: "Nest Js"
+        },
+        {
+          link: "assets/icons/mssql.svg",
+          nombre: "Microsoft SQL Server"
+        },
+        {
+          link: "assets/icons/azure.svg",
+          nombre: "Azure"
+        },
+        {
+          link: "assets/icons/docker.svg",
+          nombre: "Docker"
+        },
+      ]
+    },
+    {
+      nombre: "Talento Tech Bogotá",
+      link: "https://talentotechbogota.co/",
+      icon: "https://talentotechbogota.co/images/TalentoTech.png",
+      descripcion: "Un programa gubernamental de capacitación en habilidades digitales de vanguardia, tales como Programación Web Full Stack, Inteligencia Artificial, Blockchain, Análisis de Datos y Arquitectura en la Nube. Impulsamos tu empleabilidad y emprendimiento en el ámbito tecnológico, contribuyendo a cerrar la brecha digital en el país.",
+      tecnologias: [
+        {
+          link: "assets/icons/nextjs.svg",
+          nombre: "Next Js"
+        },
+        {
+          link: "assets/icons/nodejs.svg",
           nombre: "Node Js"
         },
         {
-          link: "https://th.bing.com/th/id/R.bab2c760c60f17191cb3a002e08a3dbf?rik=yiOb%2bDZuARgRSw&riu=http%3a%2f%2fpngimg.com%2fuploads%2fmysql%2fmysql_PNG23.png&ehk=ughz54ymXwgnjlfws2xz7%2fznA2I4qAWExdUJe%2bcD7K0%3d&risl=&pid=ImgRaw&r=0",
+          link: "assets/icons/mysql.svg",
           nombre: "MySql"
         },
       ]
     },
     {
-      nombre: "Crusos Adobe",
+      nombre: "Cursos Adobe",
       link: "https://cursosadobe.com",
       icon: "https://cursosadobe.com/assets/adobe.png",
       descripcion: "Una aplicación web que ofrece cursos de Adobe para empresas, con cuentas administrativas para la gestión de estudiantes y la opción de obtener certificaciones.",
       tecnologias: [
         {
-          link: "https://angular.dev/assets/icons/favicon-32x32.png",
+          link: "assets/icons/angular.svg",
           nombre: "Angular"
         },
         {
-          link: "https://nodejs.org/static/images/favicons/favicon.png",
+          link: "assets/icons/nodejs.svg",
           nombre: "Node Js"
         },
         {
-          link: "https://th.bing.com/th/id/R.bab2c760c60f17191cb3a002e08a3dbf?rik=yiOb%2bDZuARgRSw&riu=http%3a%2f%2fpngimg.com%2fuploads%2fmysql%2fmysql_PNG23.png&ehk=ughz54ymXwgnjlfws2xz7%2fznA2I4qAWExdUJe%2bcD7K0%3d&risl=&pid=ImgRaw&r=0",
+          link: "assets/icons/mysql.svg",
           nombre: "MySql"
         },
       ]
@@ -61,15 +105,36 @@ export class HomeComponent {
       descripcion: "Una plataforma de turismo que te permite reservar hospedaje en varios hoteles, programar tours alrededor de Santa Marta - Minca y descubrir los mejores bares y restaurantes en la zona.",
       tecnologias: [
         {
-          link: "https://s1.wp.com/i/favicon.ico",
+          link: "assets/icons/wordpress.svg",
           nombre: "Wordpress"
         },
         {
-          link: "https://th.bing.com/th/id/R.bab2c760c60f17191cb3a002e08a3dbf?rik=yiOb%2bDZuARgRSw&riu=http%3a%2f%2fpngimg.com%2fuploads%2fmysql%2fmysql_PNG23.png&ehk=ughz54ymXwgnjlfws2xz7%2fznA2I4qAWExdUJe%2bcD7K0%3d&risl=&pid=ImgRaw&r=0",
+          link: "assets/icons/mysql.svg",
           nombre: "MySql"
         },
       ]
     },
+    {
+      nombre: "Networking Miami",
+      link: "https://networking.miami",
+      icon: "https://networking.miami/media/logos-miami/logo-morado.png",
+      descripcion: "Una red social sobre conectar personas dentro de Miami según sus intereses, idiomas, profesión y ubicación. Facilitando así conexiones valiosas y oportunidades de networking.",
+      tecnologias: [
+        {
+          link: "assets/icons/angular.svg",
+          nombre: "Angular"
+        },
+        {
+          link: "assets/icons/nodejs.svg",
+          nombre: "Node Js"
+        },
+        {
+          link: "assets/icons/mysql.svg",
+          nombre: "MySql"
+        },
+      ]
+    },
+
   ]
 
   interval = 0
