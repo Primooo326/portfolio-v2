@@ -32,8 +32,8 @@ export class HomeComponent {
     },
     {
       nombre: "Oberon 360",
-      link: "https://oberon360.eastus.cloudapp.azure.com/auth",
-      icon: "https://oberon360.eastus.cloudapp.azure.com/favicon.ico",
+      link: "https://dev.oberon360.com/auth",
+      icon: "https://dev.oberon360.com/favicon.ico",
       descripcion: "Aplicativo web para la gestión de clientes, proveedores, productos, tracking de flotas, gestión de personal. Integrado con reconocimiento facial, gps, inteligencia artificial, analitica de datos, entre otros.",
       tecnologias: [
         {
