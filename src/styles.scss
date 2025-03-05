@@ -7,12 +7,14 @@ html {
   font-family: 'lato', sans-serif;
 
 }
+
 .lato {
   font-family: 'lato', sans-serif;
 
 }
+
 .audiowide {
-font-family: 'Audiowide', sans-serif;
+  font-family: 'Audiowide', sans-serif;
 }
 
 /*==============================
@@ -22,10 +24,12 @@ font-family: 'Audiowide', sans-serif;
   display: block;
   overflow: hidden;
 }
+
 #magic-cursor {
   position: relative;
   z-index: 9999;
 }
+
 @media (max-width: 1040px) {
   #magic-cursor {
     display: none;
@@ -70,6 +74,7 @@ font-family: 'Audiowide', sans-serif;
   font-weight: 500;
   text-transform: capitalize;
 }
+
 /*==============================
   MEGIC CURSOR END
 ===============================*/

@@ -1,0 +1,42 @@
+<div class="w-full p-8 flex flex-wrap justify-around items-start border-t">
+
+  <div class="flex justify-center flex-col">
+
+    <h3 class="font-bold text-lg">Contacto</h3>
+
+    <div class="flex flex-col space-y-4 mt-6">
+
+      @for (item of contacto;let i = $index; track i) {
+      <a href="{{item.link}}" target="_blank" class="text-secondary-content">
+        <i [ngClass]="item.icon"></i>
+        <span class="text-sm ms-1">
+          {{item.nombre}}
+
+        </span>
+      </a>
+      }
+    </div>
+
+  </div>
+
+  <div class="flex justify-center flex-col">
+
+    <h3 class="font-bold text-lg">herramientas</h3>
+
+    <div class="flex flex-col space-y-4 mt-6">
+      @for (item of herramientas;let i = $index; track i) {
+      <button (click)="item.handler()" class="text-secondary-content">
+        <span class="text-sm ms-1">
+          {{item.nombre}}
+        </span>
+      </button>
+      }
+    </div>
+
+  </div>
+
+</div>
+
+<p class="text-center text-secondary-content text-xs mb-2">
+  Copyright © {{currentYear}} Primooo.
+</p>

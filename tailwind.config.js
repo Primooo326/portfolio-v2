@@ -21,6 +21,7 @@ module.exports = {
           "error": "#ff093a",
           "base-content": "#fff",
           "secondary-content": "#55e6a5"
+
         },
       },
     ],

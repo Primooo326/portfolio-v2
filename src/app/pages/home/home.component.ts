@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardProyectoComponent } from '../../components/card-proyecto/card-proyecto.component';
 import { Proyecto } from '../../models/interfaces';
+import { FooterComponent } from "../../components/footer/footer.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CardProyectoComponent],
+  imports: [CommonModule, CardProyectoComponent, FooterComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

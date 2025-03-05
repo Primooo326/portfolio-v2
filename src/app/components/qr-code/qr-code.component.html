@@ -1,0 +1,14 @@
+<div class="w-full flex flex-col justify-center items-center space-y-2 p-4">
+  <canvas class="w-full" #qrCanvas></canvas>
+
+  <textarea class="textarea textarea-bordered w-full" data-theme="ligth" [(ngModel)]="qrData"
+    (ngModelChange)="onInputChange()" placeholder="Tu texto o URL aquí"></textarea>
+  <div class="w-full flex justify-between">
+    <button class="btn btn-success" (click)="downloadQR()">
+      Descargar PNG
+    </button>
+    <button class="btn btn-info" (click)="shareQR()">
+      Compartir
+    </button>
+  </div>
+</div>
