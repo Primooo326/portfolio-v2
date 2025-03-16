@@ -1,14 +1,17 @@
 <div class="h-screen w-full relative">
-  <img class="h-full w-full object-cover" src="assets/img/Portada.webp" alt="">
+  <img class="h-full w-full object-cover object-left" src="assets/img/Portada.webp" alt="">
   <div class="absolute top-0 left-0 h-full w-full flex flex-col justify-center p-10"
     style="background-color: rgba(0, 0, 0, 0.4);">
     <div class="lg:w-[500px]">
 
-      <h1 class="lg:text-5xl text-3xl font-bold" style="margin-bottom: 70px;">Hola, me llamo Juan <br>un excelente
+      <h1 class="lg:text-5xl text-3xl font-semibold">Hola, soy <span
+          class="font-bold text-secondary-content">Juan</span>
+      </h1>
+      <h2 style="margin-bottom: 70px;" class="lg:text-3xl text-2xl font-semibold">
+        un excelente
         <span class="text-secondary-content block cd-headline rotate-1">
           <span class="cd-words-wrapper" style="width: 300px;">
-            <b class="is-visible" [ngClass]="{'is-visible': interval == 0, 'is-hidden':interval != 0}">Desarrollador
-              Web</b>
+            <b class="is-visible" [ngClass]="{'is-visible': interval == 0, 'is-hidden':interval != 0}">Desarrollador</b>
             @defer (on timer(2500)) {
 
             <b class="is-hidden" [ngClass]="{'is-visible': interval == 1, 'is-hidden':interval != 1}">Jugador</b>
@@ -19,8 +22,10 @@
             }
           </span>
         </span>
-      </h1>
-      <p>Me considero un apasionado desarrollador web fullstack, comprometido en crear soluciones
+      </h2>
+      <p>Soy un <span class="text-secondary-content font-semibold">apasionado</span> desarrollador web fullstack,
+        comprometido en
+        crear soluciones
         innovadoras que
         satisfagan las
         necesidades de diversos públicos. Mi enfoque se centra en desarrollar herramientas, aplicaciones y servicios que
@@ -29,7 +34,9 @@
         encontrar
         formas originales de abordar los desafíos técnicos. Además, disfruto de la integración de diversas herramientas
         y
-        tecnologías para potenciar la funcionalidad y el rendimiento de los productos que desarrollo.</p>
+        tecnologías para potenciar la funcionalidad y el rendimiento de los productos que desarrollo, y por si te mata
+        la curiosidad, <span class="text-secondary-content font-semibold">primoooo</span> es mi apodo desde la
+        infacia :)</p>
 
       <div class="flex justify-start my-5 gap-5">
         <a href="https://www.linkedin.com/in/juan-morales-dev/" target="_blank"
@@ -52,15 +59,36 @@
     </div>
   </div>
 </div>
-<div class=" w-full p-10 flex justify-center flex-col space-y-20">
+<div class="w-full p-10">
 
-  <h2 class="text-4xl font-semibold text-secondary-content text-center">Mis proyectos</h2>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-28 w-full justify-between items-center">
-    @for (item of proyectos;let i = $index; track i) {
-    <app-card-proyecto [proyecto]="item"></app-card-proyecto>
-    }
+  <div role="tablist" class="tabs tabs-bordered ">
+    <a role="tab" class="tab text-xl font-semibold" (click)="changeTab('mis proyectos')"
+      [ngClass]="{'tab-active text-secondary-content': currentTab() == 'mis proyectos'}">Mis proyectos</a>
+    <!-- <a role="tab" class="tab text-xl font-semibold ">Mis
+      experiencias</a> -->
+    <a role="tab" class="tab text-xl font-semibold" (click)="changeTab('mis herramientas')"
+      [ngClass]="{'tab-active text-secondary-content': currentTab() == 'mis herramientas'}">Mis Herramientas</a>
   </div>
 
+</div>
+<div class="w-full p-10">
+
+  @if (currentTab() == 'mis proyectos') {
+
+  <div class="w-full flex justify-center flex-col space-y-20">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-28 w-full justify-between items-top">
+      @for (item of proyectos;let i = $index; track i) {
+      <app-card-proyecto [proyecto]="item"></app-card-proyecto>
+      }
+    </div>
+
+  </div>
+
+  } @if (currentTab() == 'mis herramientas') {
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-28 w-full justify-between items-top">
+
+  </div>
+  }
 </div>
 <app-footer></app-footer>

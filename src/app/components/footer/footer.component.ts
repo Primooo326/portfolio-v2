@@ -36,8 +36,6 @@ export class FooterComponent {
     }
 
   ]
-  currentYear = new Date().getFullYear()
-
 
   herramientas = [
     {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardProyectoComponent } from '../../components/card-proyecto/card-proyecto.component';
 import { Proyecto } from '../../models/interfaces';
@@ -138,7 +138,16 @@ export class HomeComponent {
 
   ]
 
+  herramientas = [
+    {
+      nombre: "QR Code",
+      descripcion: "Genera un QR Code dinámico con el contenido que desees.",
+    }
+  ]
+
   interval = 0
+
+  currentTab = signal('mis proyectos')
 
   constructor() {
     setInterval(() => {
@@ -146,6 +155,10 @@ export class HomeComponent {
         this.interval++
       } else this.interval = 0
     }, 2500);
+  }
+
+  changeTab(tab: string) {
+    this.currentTab.set(tab)
   }
 
 }
