@@ -7,9 +7,9 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   template: `
     <div class="modal-backdrop" [class.show]="isOpen" (click)="backdropClick($event)">
-      <div class="modal-container" #modalContainer [class.show]="isOpen">
-        <div class="flex justify-between items-center p-2 text-secondary">
-          <h3 class="font-bold text-lg ">{{ title }}</h3>
+      <div class="modal-container bg-neutral rounded-md" [ngClass]="className" #modalContainer [class.show]="isOpen">
+        <div class="flex justify-between items-center p-4 text-white">
+          <h3 class="font-bold text-lg">{{ title }}</h3>
           <button class="btn btn-ghost text-lg font-bold" (click)="close()" *ngIf="showCloseButton">
             x
           </button>
@@ -43,12 +43,6 @@ import { CommonModule } from '@angular/common';
     }
 
     .modal-container {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      width: 90%;
-      max-width: 500px;
-      max-height: 90vh;
       display: flex;
       flex-direction: column;
       transform: scale(0.8);
@@ -71,7 +65,7 @@ export class ModalComponent implements AfterViewInit {
   @Input() confirmText: string = 'Aceptar';
   @Input() cancelText: string = 'Cancelar';
   @Input() closeOnBackdropClick: boolean = true;
-
+  @Input() className: string = 'w-auto h-auto';
   @Output() closed = new EventEmitter<void>();
   @Output() confirmed = new EventEmitter<void>();
 
@@ -82,6 +76,7 @@ export class ModalComponent implements AfterViewInit {
     this.modalContainer.nativeElement.addEventListener('click', (event: Event) => {
       event.stopPropagation();
     });
+    console.log(this.className);
   }
 
   open(): void {

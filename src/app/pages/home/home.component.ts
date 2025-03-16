@@ -3,11 +3,14 @@ import { CommonModule } from '@angular/common';
 import { CardProyectoComponent } from '../../components/card-proyecto/card-proyecto.component';
 import { Proyecto } from '../../models/interfaces';
 import { FooterComponent } from "../../components/footer/footer.component";
+import { CardHerramientaComponent } from '../../components/card-herramienta/card-herramienta.component';
+import { QrCodeComponent } from '../../components/qr-code/qr-code.component';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CardProyectoComponent, FooterComponent],
+  imports: [CommonModule, CardProyectoComponent, FooterComponent, CardHerramientaComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -142,6 +145,17 @@ export class HomeComponent {
     {
       nombre: "QR Code",
       descripcion: "Genera un QR Code dinámico con el contenido que desees.",
+      handler: () => this.codeQr()
+    },
+    {
+      nombre: "Redimensiona Imagenes",
+      descripcion: "Reduce el peso de tus imagenes y ajusta la calidad según tus necesidades.",
+      handler: () => { }
+    },
+    {
+      nombre: "Descarga musica de Youtube",
+      descripcion: "Descarga musica de Youtube en formato mp3.",
+      handler: () => { }
     }
   ]
 
@@ -149,16 +163,29 @@ export class HomeComponent {
 
   currentTab = signal('mis proyectos')
 
-  constructor() {
+  constructor(private modalService: ModalService) {
     setInterval(() => {
       if (this.interval < 2) {
         this.interval++
       } else this.interval = 0
     }, 2500);
+
+    this.codeQr()
   }
 
   changeTab(tab: string) {
     this.currentTab.set(tab)
+  }
+
+  codeQr() {
+    this.modalService.open({
+      title: 'QR Code Dinámico',
+      component: QrCodeComponent,
+      showFooter: true,
+      confirmText: 'Guardar',
+      cancelText: 'Cerrar',
+      className: "w-[500px] max-w-[90%]"
+    });
   }
 
 }

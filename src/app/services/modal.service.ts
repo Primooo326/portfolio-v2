@@ -26,6 +26,7 @@ export class ModalService {
     confirmText?: string;
     cancelText?: string;
     closeOnBackdropClick?: boolean;
+    className?: string;
   }): ComponentRef<ModalComponent> {
     // Crear el elemento host para el modal
     const modalHost = document.createElement('div');
@@ -46,7 +47,7 @@ export class ModalService {
     if (options.confirmText) modalInstance.confirmText = options.confirmText;
     if (options.cancelText) modalInstance.cancelText = options.cancelText;
     if (options.closeOnBackdropClick !== undefined) modalInstance.closeOnBackdropClick = options.closeOnBackdropClick;
-
+    if (options.className) modalInstance.className = options.className;
     // Objeto para almacenar la referencia del componente de contenido
     let contentRef: ComponentRef<any> | undefined;
 

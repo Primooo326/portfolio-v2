@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { QrComponent } from './qr.component';
+import { CompressorImgComponent } from './compressor-img.component';
 
-describe('QrComponent', () => {
-  let component: QrComponent;
-  let fixture: ComponentFixture<QrComponent>;
+describe('CompressorImgComponent', () => {
+  let component: CompressorImgComponent;
+  let fixture: ComponentFixture<CompressorImgComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QrComponent ]
+      declarations: [ CompressorImgComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QrComponent);
+    fixture = TestBed.createComponent(CompressorImgComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

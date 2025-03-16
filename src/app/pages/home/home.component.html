@@ -87,7 +87,9 @@
 
   } @if (currentTab() == 'mis herramientas') {
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-28 w-full justify-between items-top">
-
+    @for (item of herramientas;let i = $index; track i) {
+    <app-card-herramienta [herramienta]="item"></app-card-herramienta>
+    }
   </div>
   }
 </div>
