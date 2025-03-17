@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+// modal.component.ts
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -6,103 +7,116 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="modal-backdrop" [class.show]="isOpen" (click)="backdropClick($event)">
-      <div class="modal-container" #modalContainer [class.show]="isOpen">
-        <div class="flex justify-between items-center p-2 text-secondary">
-          <h3 class="font-bold text-lg ">{{ title }}</h3>
-          <button class="btn btn-ghost text-lg font-bold" (click)="close()" *ngIf="showCloseButton">
-            x
-          </button>
-        </div>
-        <div class="modal-body">
-          <ng-content></ng-content>
+    @if (isVisible) {
+      <div
+        class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in"
+        (click)="onBackdropClick($event)"
+      >
+        <div
+          [class]="'bg-neutral rounded-lg shadow-xl animate-scale-in max-w-[90vw] max-h-[90vh] overflow-y-auto scroll ' + containerClass"
+          (click)="$event.stopPropagation()"
+        >
+          <!-- Header -->
+          @if (showHeader) {
+            <div class="flex justify-between items-center p-4 border-b border-gray-600">
+              <h3 class="text-lg font-semibold text-white">{{ title }}</h3>
+              @if (showCloseButton) {
+                <button
+                  class="text-gray-400 hover:text-white transition-colors"
+                  (click)="close()"
+                >
+                  ✕
+                </button>
+              }
+            </div>
+          }
+
+          <!-- Body -->
+          <div [class]="bodyClass">
+            <ng-content></ng-content>
+          </div>
+
+          <!-- Footer -->
+          @if (showFooter) {
+            <div class="flex justify-end gap-2 p-4 border-t border-gray-600">
+              @if (showCancelButton) {
+                <button
+                  class="px-4 py-2 text-sm rounded bg-gray-600 hover:bg-gray-700 text-white transition-colors"
+                  (click)="close()"
+                >
+                  {{ cancelText }}
+                </button>
+              }
+              <button
+                class="px-4 py-2 text-sm rounded bg-primary hover:bg-primary-focus text-white transition-colors"
+                (click)="onConfirm()"
+              >
+                {{ confirmText }}
+              </button>
+            </div>
+          }
         </div>
       </div>
-    </div>
+    }
   `,
   styles: [`
-    .modal-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s, visibility 0.3s;
+    :host {
+      display: contents;
     }
 
-    .modal-backdrop.show {
-      opacity: 1;
-      visibility: visible;
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
-    .modal-container {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      width: 90%;
-      max-width: 500px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      transform: scale(0.8);
-      opacity: 0;
-      transition: transform 0.3s, opacity 0.3s;
-      overflow: hidden;
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
 
-    .modal-container.show {
-      transform: scale(1);
-      opacity: 1;
+    .animate-fade-in {
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .animate-scale-in {
+      animation: scaleIn 0.2s ease-out;
     }
   `]
 })
-export class ModalComponent implements AfterViewInit {
-  @Input() title: string = 'Modal';
-  @Input() isOpen: boolean = false;
-  @Input() showCloseButton: boolean = true;
-  @Input() showFooter: boolean = false;
-  @Input() confirmText: string = 'Aceptar';
-  @Input() cancelText: string = 'Cancelar';
-  @Input() closeOnBackdropClick: boolean = true;
+export class ModalComponent {
+  @Input() isVisible = false;
+  @Input() title = '';
+  @Input() showHeader = true;
+  @Input() showFooter = false;
+  @Input() showCloseButton = true;
+  @Input() showCancelButton = true;
+  @Input() confirmText = 'Aceptar';
+  @Input() cancelText = 'Cancelar';
+  @Input() containerClass = 'w-[800px]';
+  @Input() bodyClass = 'p-4';
+  @Input() closeOnBackdropClick = true;
 
-  @Output() closed = new EventEmitter<void>();
+  @Output() visibleChange = new EventEmitter<boolean>();
   @Output() confirmed = new EventEmitter<void>();
 
-  @ViewChild('modalContainer') modalContainer!: ElementRef;
-
-  ngAfterViewInit(): void {
-    // Prevenir que los clics dentro del modal se propaguen al backdrop
-    this.modalContainer.nativeElement.addEventListener('click', (event: Event) => {
-      event.stopPropagation();
-    });
-  }
-
-  open(): void {
-    this.isOpen = true;
-    document.body.style.overflow = 'hidden'; // Prevenir scroll del body
-  }
-
-  close(): void {
-    this.isOpen = false;
-    document.body.style.overflow = ''; // Restaurar scroll del body
-    this.closed.emit();
-  }
-
-  confirm(): void {
-    this.confirmed.emit();
-    this.close();
-  }
-
-  backdropClick(event: Event): void {
+  onBackdropClick(event: MouseEvent): void {
     if (this.closeOnBackdropClick) {
       this.close();
     }
+  }
+
+  close(): void {
+    this.isVisible = false;
+    this.visibleChange.emit(false);
+  }
+
+  onConfirm(): void {
+    this.confirmed.emit();
   }
 }

@@ -1,0 +1,15 @@
+<div
+  class="bg-neutral rounded-md py-4 px-6 flex justify-between items-center cursor-pointer hover:scale-105 transition-transform duration-300 ease-in-out hover:border-success hover:border"
+  (click)="herramienta.handler()">
+  <div class="w-2/3">
+    <h1 class="text-secondary-content text-lg font-semibold">
+      {{herramienta.nombre}}
+    </h1>
+    <p class="text-white">
+      {{herramienta.descripcion}}
+    </p>
+  </div>
+
+  <i class="fas fa-chevron-right text-secondary-content">
+  </i>
+</div>

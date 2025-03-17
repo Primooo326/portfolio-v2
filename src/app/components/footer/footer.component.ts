@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ModalService } from '../../services/modal.service';
 import { QrCodeComponent } from '../qr-code/qr-code.component';
 
 @Component({
@@ -9,7 +8,6 @@ import { QrCodeComponent } from '../qr-code/qr-code.component';
   imports: [CommonModule],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
-  providers: [ModalService]
 })
 export class FooterComponent {
 
@@ -36,8 +34,6 @@ export class FooterComponent {
     }
 
   ]
-  currentYear = new Date().getFullYear()
-
 
   herramientas = [
     {
@@ -46,18 +42,11 @@ export class FooterComponent {
     }
   ]
 
-  constructor(private modalService: ModalService) {
+  constructor() {
 
   }
 
   codeQr() {
-    this.modalService.open({
-      title: 'QR Code Dinámico',
-      component: QrCodeComponent,
-      showFooter: true,
-      confirmText: 'Guardar',
-      cancelText: 'Cerrar'
-    });
   }
 
 }

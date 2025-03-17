@@ -1,13 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardProyectoComponent } from '../../components/card-proyecto/card-proyecto.component';
 import { Proyecto } from '../../models/interfaces';
 import { FooterComponent } from "../../components/footer/footer.component";
+import { CardHerramientaComponent } from '../../components/card-herramienta/card-herramienta.component';
+import { QrCodeComponent } from '../../components/qr-code/qr-code.component';
+import { CompressorImgComponent } from '../../components/compressor-img/compressor-img.component';
+import { ModalComponent } from '../../components/modal/modal.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CardProyectoComponent, FooterComponent],
+  imports: [CommonModule, CardProyectoComponent, FooterComponent, CardHerramientaComponent, ModalComponent, CompressorImgComponent, QrCodeComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -138,7 +142,28 @@ export class HomeComponent {
 
   ]
 
+  herramientas = [
+    {
+      nombre: "Genera código QR",
+      descripcion: "Genera un QR Code dinámico con el contenido que desees.",
+      handler: () => this.currentH.set("qr")
+    },
+    {
+      nombre: "Comprime Imagenes",
+      descripcion: "Reduce el peso de tus imagenes y ajusta la calidad según tus necesidades.",
+      handler: () => this.currentH.set("compressor")
+    },
+    {
+      nombre: "Descarga musica de Youtube",
+      descripcion: "Descarga musica de Youtube en formato mp3.",
+      handler: () => { }
+    }
+  ]
+
   interval = 0
+
+  currentH = signal("");
+  currentTab = signal('mis proyectos')
 
   constructor() {
     setInterval(() => {
@@ -146,6 +171,10 @@ export class HomeComponent {
         this.interval++
       } else this.interval = 0
     }, 2500);
+  }
+
+  changeTab(tab: string) {
+    this.currentTab.set(tab)
   }
 
 }

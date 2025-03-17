@@ -2,12 +2,17 @@
 module.exports = {
   content: [
     "./src/**/*.{html,ts}",
+    './node_modules/flyonui/dist/js/*.js',
   ],
   theme: {
     extend: {},
   },
-  plugins: [require("daisyui")],
-  daisyui: {
+  plugins: [
+    require('flyonui'),
+    require('flyonui/plugin'),
+    require('tailwindcss-motion')
+  ],
+  flyonui: {
     themes: [
       {
         mytheme: {

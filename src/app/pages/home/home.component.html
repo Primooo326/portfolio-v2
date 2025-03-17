@@ -59,15 +59,49 @@
     </div>
   </div>
 </div>
-<div class=" w-full p-10 flex justify-center flex-col space-y-20">
+<div class="w-full p-10">
 
-  <h2 class="text-4xl font-semibold text-secondary-content text-center">Mis proyectos</h2>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-28 w-full justify-between items-center">
-    @for (item of proyectos;let i = $index; track i) {
-    <app-card-proyecto [proyecto]="item"></app-card-proyecto>
-    }
+  <div role="tablist" class="tabs tabs-bordered ">
+    <a role="tab" class="tab text-xl font-semibold w-full" (click)="changeTab('mis proyectos')"
+      [ngClass]="{'tab-active': currentTab() == 'mis proyectos'}">Mis proyectos</a>
+    <!-- <a role="tab" class="tab text-xl font-semibold ">Mis
+      experiencias</a> -->
+    <a role="tab" class="tab text-xl font-semibold w-full" (click)="changeTab('mis herramientas')"
+      [ngClass]="{'tab-active': currentTab() == 'mis herramientas'}">Mis
+      Herramientas</a>
   </div>
 
 </div>
+<div class="w-full p-10">
+
+  @if (currentTab() == 'mis proyectos') {
+
+  <div class="w-full flex justify-center flex-col space-y-20">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-28 w-full justify-between items-top">
+      @for (item of proyectos;let i = $index; track i) {
+      <app-card-proyecto [proyecto]="item"></app-card-proyecto>
+      }
+    </div>
+
+  </div>
+
+  } @if (currentTab() == 'mis herramientas') {
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-28 w-full justify-between items-top">
+    @for (item of herramientas;let i = $index; track i) {
+    <app-card-herramienta [herramienta]="item"></app-card-herramienta>
+    }
+  </div>
+  }
+</div>
 <app-footer></app-footer>
+
+
+<app-modal [isVisible]="currentH() === 'compressor'" (visibleChange)="currentH.set('')" title="Comprime imagenes">
+  <app-compressor-img></app-compressor-img>
+</app-modal>
+
+<app-modal [isVisible]="currentH() === 'qr'" (visibleChange)="currentH.set('')" containerClass="w-[800px]"
+  title="Genera código QR">
+  <app-qr-code></app-qr-code>
+</app-modal>
