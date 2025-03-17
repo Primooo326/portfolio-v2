@@ -1,4 +1,4 @@
-<div class="flex flex-col p-4 space-y-4 w-full">
+<div class="flex flex-col p-4 space-y-4 w-full h-full overflow-x-hidden overflow-y-auto">
   <!-- Visualizador de comparación con loader -->
   @if(currentFileCompressed()) {
   <div class="relative">
@@ -21,7 +21,7 @@
   </div>
 
   <!-- Control de calidad -->
-  <div class="flex items-center gap-2 w-full">
+  <div class="flex flex-col md:flex-row items-center gap-2 w-full">
     <h1 class="text-white font-bold w-[120px]">
       Calidad: {{ quality() * 100 }} %
     </h1>
@@ -38,7 +38,7 @@
   }
 
   <!-- Controles de archivo -->
-  <div class="flex gap-4 w-full">
+  <div class="flex flex-col md:flex-row gap-4 w-full">
     <input type="file" class="input w-full p-2" multiple accept="image/*" (change)="onFileInputChange($event)"
       [disabled]="loading()" />
     @if(fileInputs().length > 0) {
@@ -64,9 +64,11 @@
       </div>
       }
 
-      <div class="flex justify-between items-center w-full max-h-[150px] rounded overflow-hidden bg-base-200">
-        <img [src]="defaultImage()?.preview" alt="Imagen por defecto" class="h-full w-1/4 object-cover rounded">
-        <div class="flex flex-col w-3/4 p-2 items-start space-y-1 overflow-hidden">
+      <div
+        class="flex flex-col md:flex-row justify-between items-center w-full md:max-h-[150px] rounded cursor-pointer overflow-hidden">
+        <img [src]="defaultImage()?.preview" alt="Imagen por defecto"
+          class="aspect-video md:aspect-square md:h-full w-full md:w-1/4 p-2 md:p-0 object-cover rounded">
+        <div class="flex flex-col md:w-3/4 w-full md:items-start p-2 space-y-1 overflow-hidden">
           <h1 class="text-white text-lg">Imagen de ejemplo</h1>
           <p class="text-white text-sm">Tamaño: {{ defaultImage()?.size }} MB</p>
           <p class="text-white text-sm">Nuevo tamaño: {{ defaultImage()?.newSize ? defaultImage()?.newSize : 0 }} MB</p>
@@ -74,6 +76,7 @@
             Porcentaje comprimido: {{ defaultImage()?.compressionPercentage ? defaultImage()?.compressionPercentage : 0
             }}%
           </p>
+
         </div>
       </div>
     </div>
@@ -84,10 +87,11 @@
     <div class="relative">
 
       <div (click)="currentFileCompressed.set(item)"
-        class="flex justify-between items-center w-full max-h-[150px] rounded cursor-pointer overflow-hidden"
-        [class.bg-base-300]="currentFileCompressed()?.id === item.id">
-        <img [src]="item.preview" [alt]="item.file.name" class="h-full w-1/4 object-cover rounded">
-        <div class="flex flex-col w-3/4 p-2 items-start space-y-1 overflow-hidden">
+        class="flex flex-col md:flex-row justify-between items-center w-full md:max-h-[150px] rounded cursor-pointer overflow-hidden">
+        <!-- [class.border.border-secondary]="currentFileCompressed()?.id === item.id" -->
+        <img [src]="item.preview" [alt]="item.file.name"
+          class="aspect-video md:aspect-square md:h-full w-full md:w-1/4 p-0 object-cover rounded">
+        <div class="flex flex-col md:w-3/4 w-full md:items-start p-2 space-y-1 overflow-hidden">
           <h1 class="text-white text-lg truncate w-full overflow-hidden">{{ item.file.name }}</h1>
           <p class="text-white text-sm">Tamaño: {{ item.size }} MB</p>
           <p class="text-white text-sm">Nuevo tamaño: {{ item.newSize ? item.newSize : 0 }} MB</p>

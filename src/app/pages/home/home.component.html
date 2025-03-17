@@ -23,7 +23,8 @@
           </span>
         </span>
       </h2>
-      <p>Soy un <span class="text-secondary-content font-semibold">apasionado</span> desarrollador web fullstack,
+      <p class="text-lg">Soy un <span class="text-secondary-content font-semibold">apasionado</span> desarrollador web
+        fullstack,
         comprometido en
         crear soluciones
         innovadoras que
@@ -62,11 +63,11 @@
 <div class="w-full p-10">
 
   <div role="tablist" class="tabs tabs-bordered ">
-    <a role="tab" class="tab text-xl font-semibold w-full" (click)="changeTab('mis proyectos')"
+    <a role="tab" class="tab text-lg md:text-xl font-semibold w-full" (click)="changeTab('mis proyectos')"
       [ngClass]="{'tab-active': currentTab() == 'mis proyectos'}">Mis proyectos</a>
     <!-- <a role="tab" class="tab text-xl font-semibold ">Mis
       experiencias</a> -->
-    <a role="tab" class="tab text-xl font-semibold w-full" (click)="changeTab('mis herramientas')"
+    <a role="tab" class="tab text-lg md:text-xl font-semibold w-full" (click)="changeTab('mis herramientas')"
       [ngClass]="{'tab-active': currentTab() == 'mis herramientas'}">Mis
       Herramientas</a>
   </div>
@@ -87,7 +88,7 @@
   </div>
 
   } @if (currentTab() == 'mis herramientas') {
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-28 w-full justify-between items-top">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-28 w-full justify-between items-top">
     @for (item of herramientas;let i = $index; track i) {
     <app-card-herramienta [herramienta]="item"></app-card-herramienta>
     }
