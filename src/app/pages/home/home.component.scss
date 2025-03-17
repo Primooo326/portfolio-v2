@@ -243,5 +243,11 @@
 }
 
 .tab.tab-active {
-  border-color: #55e6a5 !important
+  border-color: #55e6a5 !important;
+  color: #55e6a5 !important
+}
+
+.tab:hover:not(.tab-active) {
+  border-color: #55e6a580 !important;
+  color: #55e6a580 !important
 }

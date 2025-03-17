@@ -1,4 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -78,3 +77,37 @@ html {
 /*==============================
   MEGIC CURSOR END
 ===============================*/
+
+* {
+
+  .scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scroll::-webkit-scrollbar-track {
+    background-color: rgb(220, 220, 220);
+    border-radius: 25px;
+  }
+
+  .scroll::-webkit-scrollbar-thumb {
+    background: #b9b9b9;
+    border-radius: 25px;
+  }
+}
+
+:root {
+
+  .scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scroll::-webkit-scrollbar-track {
+    background-color: rgb(220, 220, 220);
+    border-radius: 25px;
+  }
+
+  .scroll::-webkit-scrollbar-thumb {
+    background: #b9b9b9;
+    border-radius: 25px;
+  }
+}

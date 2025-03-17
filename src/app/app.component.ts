@@ -1,6 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { Router, Event, NavigationEnd } from '@angular/router';
+
+import { IStaticMethods } from 'flyonui/flyonui';
+declare global {
+  interface Window {
+    HSStaticMethods: IStaticMethods;
+  }
+}
 
 @Component({
   selector: 'app-root',
@@ -9,7 +17,18 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'portfolio';
+  constructor(private router: Router) {
+  }
 
+  ngOnInit() {
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationEnd) {
+        setTimeout(() => {
+          window.HSStaticMethods.autoInit();
+        }, 100);
+      }
+    });
+  }
 }

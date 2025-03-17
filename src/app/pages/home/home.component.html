@@ -62,12 +62,13 @@
 <div class="w-full p-10">
 
   <div role="tablist" class="tabs tabs-bordered ">
-    <a role="tab" class="tab text-xl font-semibold" (click)="changeTab('mis proyectos')"
-      [ngClass]="{'tab-active text-secondary-content': currentTab() == 'mis proyectos'}">Mis proyectos</a>
+    <a role="tab" class="tab text-xl font-semibold w-full" (click)="changeTab('mis proyectos')"
+      [ngClass]="{'tab-active': currentTab() == 'mis proyectos'}">Mis proyectos</a>
     <!-- <a role="tab" class="tab text-xl font-semibold ">Mis
       experiencias</a> -->
-    <a role="tab" class="tab text-xl font-semibold" (click)="changeTab('mis herramientas')"
-      [ngClass]="{'tab-active text-secondary-content': currentTab() == 'mis herramientas'}">Mis Herramientas</a>
+    <a role="tab" class="tab text-xl font-semibold w-full" (click)="changeTab('mis herramientas')"
+      [ngClass]="{'tab-active': currentTab() == 'mis herramientas'}">Mis
+      Herramientas</a>
   </div>
 
 </div>
@@ -94,3 +95,13 @@
   }
 </div>
 <app-footer></app-footer>
+
+
+<app-modal [isVisible]="currentH() === 'compressor'" (visibleChange)="currentH.set('')" title="Comprime imagenes">
+  <app-compressor-img></app-compressor-img>
+</app-modal>
+
+<app-modal [isVisible]="currentH() === 'qr'" (visibleChange)="currentH.set('')" containerClass="w-[800px]"
+  title="Genera código QR">
+  <app-qr-code></app-qr-code>
+</app-modal>
