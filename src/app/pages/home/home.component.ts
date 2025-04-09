@@ -35,6 +35,7 @@ export class HomeComponent {
         },
       ]
     },
+
     {
       nombre: "Oberon 360",
       link: "https://dev.oberon360.com/auth",
@@ -116,6 +117,22 @@ export class HomeComponent {
         {
           link: "assets/icons/mysql.svg",
           nombre: "MySql"
+        },
+      ]
+    },
+    {
+      nombre: "Fitnesspro",
+      link: "https://fitnesspro-co.web.app/",
+      icon: "https://fitnesspro-co.web.app/favicon.svg",
+      descripcion: "FitnessPro es una página web diseñada para inspirar y guiar a las personas en su viaje hacia un estilo de vida más saludable y activo. Con un diseño moderno, oscuro y dinámico, esta plataforma ofrece una experiencia inmersiva para los amantes del fitness.",
+      tecnologias: [
+        {
+          link: "assets/icons/astro.svg",
+          nombre: "Astro"
+        },
+        {
+          link: "assets/icons/cloudflare.svg",
+          nombre: "Cloudflare"
         },
       ]
     },
