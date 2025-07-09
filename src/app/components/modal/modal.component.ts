@@ -100,7 +100,7 @@ export class ModalComponent {
   @Input() cancelText = 'Cancelar';
   @Input() containerClass = 'w-[800px]';
   @Input() bodyClass = 'p-4';
-  @Input() closeOnBackdropClick = true;
+  @Input() closeOnBackdropClick = false;
 
   @Output() visibleChange = new EventEmitter<boolean>();
   @Output() confirmed = new EventEmitter<void>();

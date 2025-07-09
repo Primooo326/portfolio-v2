@@ -7,11 +7,12 @@ import { CardHerramientaComponent } from '../../components/card-herramienta/card
 import { QrCodeComponent } from '../../components/qr-code/qr-code.component';
 import { CompressorImgComponent } from '../../components/compressor-img/compressor-img.component';
 import { ModalComponent } from '../../components/modal/modal.component';
-
+import { TimelineComponent } from '../../components/timeline/timeline.component';
+import { InterestCalculatorComponent } from '../../components/interes-compuesto/interes-compuesto.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CardProyectoComponent, FooterComponent, CardHerramientaComponent, ModalComponent, CompressorImgComponent, QrCodeComponent],
+  imports: [CommonModule, CardProyectoComponent, FooterComponent, CardHerramientaComponent, ModalComponent, CompressorImgComponent, QrCodeComponent, TimelineComponent, InterestCalculatorComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -171,10 +172,15 @@ export class HomeComponent {
       handler: () => this.currentH.set("compressor")
     },
     {
-      nombre: "Descarga musica de Youtube",
-      descripcion: "Descarga musica de Youtube en formato mp3.",
-      handler: () => { }
+      nombre: "Interes Compuesto",
+      descripcion: "Calcula el valor de un investimento en un periodo de tiempo con un interes anual.",
+      handler: () => this.currentH.set("interes compuesto")
     }
+    // {
+    //   nombre: "Descarga musica de Youtube",
+    //   descripcion: "Descarga musica de Youtube en formato mp3.",
+    //   handler: () => { }
+    // }
   ]
 
   interval = 0
