@@ -1,3 +1,143 @@
-<p>
-  interes-compuesto works!
-</p>
+<div class="flex flex-col items-center justify-center w-full">
+  <form (ngSubmit)="renderChart()" class="space-y-4 w-full max-w-4xl p-4 md:p-8 bg-base-200 rounded-2xl shadow-lg">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+      <div>
+        <label class="label"><span class="label-text text-base-content">Inversión Inicial</span></label>
+        <input type="text" [value]="initialInvestment | number:'1.0-0'"
+          (input)="updateNumberValue('initialInvestment', $event)" class="input input-bordered w-full" required />
+      </div>
+      <div>
+        <label class="label"><span class="label-text text-base-content">Tasa de Interés (Efectiva Anual
+            %)</span></label>
+        <input type="number" [(ngModel)]="interestRate" name="interest-rate" required
+          class="input input-bordered w-full" />
+      </div>
+      <div>
+        <label class="label"><span class="label-text text-base-content">Frec. de Capitalización (Banco)</span></label>
+        <select [(ngModel)]="compoundingFrequency" name="compounding-frequency" class="select select-bordered w-full">
+          <option value="diaria">Diaria</option>
+          <option value="semanal">Semanal</option>
+          <option value="quincenal">Quincenal</option>
+          <option value="mensual">Mensual</option>
+          <option value="trimestral">Trimestral</option>
+          <option value="semestral">Semestral</option>
+          <option value="anual">Anual</option>
+        </select>
+      </div>
+      <div>
+        <label class="label"><span class="label-text text-base-content">Monto de Contribución</span></label>
+        <input type="text" [value]="contributionAmount | number:'1.0-0'"
+          (input)="updateNumberValue('contributionAmount', $event)" class="input input-bordered w-full" required />
+      </div>
+      <div>
+        <label class="label"><span class="label-text text-base-content">Intervalo de Contribución</span></label>
+        <select [(ngModel)]="contributionInterval" name="contribution-interval" class="select select-bordered w-full">
+          <option value="diaria">Diaria</option>
+          <option value="semanal">Semanal</option>
+          <option value="quincenal">Quincenal</option>
+          <option value="mensual">Mensual</option>
+          <option value="trimestral">Trimestral</option>
+          <option value="semestral">Semestral</option>
+          <option value="anual">Anual</option>
+        </select>
+      </div>
+      <div>
+        <label class="label"><span class="label-text text-base-content">Número de Años</span></label>
+        <input type="number" [(ngModel)]="years" name="years" required class="input input-bordered w-full" />
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+      <div>
+        <label class="label"><span class="label-text text-base-content">Moneda</span></label>
+        <select [(ngModel)]="currency" name="currency" class="select select-bordered w-full">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="COP">COP</option>
+        </select>
+      </div>
+      <div class="card-actions pt-4 w-full">
+        <button type="submit" class="btn btn-secondary text-secondary-content w-full">Calcular</button>
+      </div>
+    </div>
+  </form>
+
+  <div *ngIf="finalBalance > 0"
+    class="stats stats-vertical lg:stats-horizontal shadow mt-8 bg-secondary text-secondary-content w-full max-w-4xl">
+    <div class="stat">
+      <div class="stat-title">Balance Final</div>
+      <div class="stat-value text-2xl lg:text-3xl">{{ finalBalance | currency:currency:'symbol':'1.0-0' }}</div>
+    </div>
+    <div class="stat">
+      <div class="stat-title">Total Invertido</div>
+      <div class="stat-value text-2xl lg:text-3xl">{{ totalContributions | currency:currency:'symbol':'1.0-0' }}</div>
+    </div>
+    <div class="stat">
+      <div class="stat-title">Ganancia (Intereses)</div>
+      <div class="stat-value text-accent text-2xl lg:text-3xl">{{ totalInterest | currency:currency:'symbol':'1.0-0' }}
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-8 w-full max-w-4xl bg-base-300 p-4 rounded-2xl shadow-lg">
+    <div class="flex flex-wrap items-end gap-4 mb-4">
+      <div class="flex-grow">
+        <label class="label"><span class="label-text text-base-content">Mostrar Períodos</span></label>
+        <select [(ngModel)]="displayPeriod" (ngModelChange)="renderChart()" name="display-period"
+          class="select select-bordered w-full">
+          <option value="mensual">Mensual</option>
+          <option value="anual">Anual</option>
+          <option value="5-anios">Cada 5 Años</option>
+          <option value="10-anios">Cada 10 Años</option>
+        </select>
+      </div>
+      <div class="form-control">
+        <label class="label cursor-pointer gap-2">
+          <span class="label-text">Retiro Mensual Sostenible</span>
+          <input type="checkbox" [(ngModel)]="showSustainableWithdrawal" (ngModelChange)="renderChart()"
+            class="checkbox checkbox-primary" />
+        </label>
+      </div>
+    </div>
+
+    <div class="w-full h-96">
+      <canvas id="interestChart"></canvas>
+    </div>
+  </div>
+
+  <div *ngIf="tableData.length > 1" class="mt-8 w-full max-w-4xl">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold">Desglose de la Inversión</h2>
+      <button (click)="exportToExcel()" class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+        </svg>
+        Exportar
+      </button>
+    </div>
+    <div class="overflow-x-auto rounded-2xl shadow-lg">
+      <table class="table table-zebra w-full">
+        <thead class="bg-base-200">
+          <tr>
+            <th>Período</th>
+            <th>Total Invertido</th>
+            <th>Intereses Ganados</th>
+            <th>Balance Total</th>
+            <th *ngIf="showSustainableWithdrawal">Retiro Mensual Sostenible</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of tableData">
+            <th>{{ row.periodLabel }}</th>
+            <td>{{ row.totalContributions | currency:currency:'symbol':'1.0-0' }}</td>
+            <td>{{ (row.totalValue - row.totalContributions) | currency:currency:'symbol':'1.0-0' }}</td>
+            <td>{{ row.totalValue | currency:currency:'symbol':'1.0-0' }}</td>
+            <td *ngIf="showSustainableWithdrawal">{{ row.sustainableWithdrawal ?? 0 | currency:currency:'symbol':'1.0-0'
+              }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
