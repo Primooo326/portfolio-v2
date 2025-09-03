@@ -1,21 +1,71 @@
-<ul class="timeline timeline-snap-icon timeline-compact timeline-vertical w-full">
-  <span class="text-sm">April 1, 2024</span>
-  <!-- timeline item 1-->
+<!-- Plantilla HTML actualizada para mostrar el timeline de forma intercalada -->
+<ul class="timeline timeline-vertical w-full">
+  @for (exp of experiencias; track exp.title; let i = $index) {
   <li>
+    @if (i > 0) {
+    <hr />
+    }
+
+    <!-- Si el índice (i) es par, el contenido se muestra a la izquierda (timeline-start) -->
+    @if (i % 2 === 0) {
+    <div class="timeline-start timeline-box md:text-end">
+      <div
+        class="mb-3 flex flex-col sm:flex-row sm:items-center sm:justify-end sm:gap-6 font-medium text-{{exp.color}}">
+        <span class="text-lg">{{ exp.title }}</span>
+        <span class="text-base-content/50 font-normal text-sm">({{ exp.fecha }})</span>
+      </div>
+      <p class="mb-4 text-base-content/80">
+        {{ exp.description }}
+      </p>
+      <div class="space-y-4">
+        @for (proyecto of exp.proyectos; track proyecto.nombre) {
+        <div class="p-3 rounded-lg border border-base-300">
+          <h4 class="font-semibold text-base-content">{{ proyecto.nombre }}</h4>
+          <div class="mt-2 flex flex-wrap justify-end gap-2">
+            @for (tech of proyecto.tecnologias; track tech.nombre) {
+            <div class="badge badge-soft badge-{{exp.color}}">{{ tech.nombre }}</div>
+            }
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+
     <div class="timeline-middle">
-      <span class="bg-primary/20 flex size-4.5 items-center justify-center rounded-full">
-        <span class="badge badge-error size-3 rounded-full p-0"></span>
+      <span class="flex size-4.5 items-center justify-center rounded-full bg-{{exp.color}}/20">
+        <span class="badge badge-{{exp.color}} w-3 h-3 rounded-full p-0"></span>
       </span>
     </div>
-    <div class="timeline-end ms-2 m-3 w-full rounded-lg">
-      <div class="text-base-content pt-0.5 mb-3 font-medium">12 Invoices have been paid</div>
-      <p class="mb-2">Invoices have been paid to the company</p>
-      <button class="btn btn-sm btn-soft btn-secondary">
-        <span class="icon-[tabler--file-type-pdf] text-error"></span>
-        invoices.pdf
-      </button>
-    </div>
-    <hr />
-  </li>
 
+    <!-- Si el índice (i) es impar, el contenido se muestra a la derecha (timeline-end) -->
+    @if (i % 2 !== 0) {
+    <div class="timeline-end timeline-box">
+      <div class="mb-3 flex flex-col sm:flex-row sm:items-center sm:gap-6 font-medium text-{{exp.color}}">
+        <span class="text-lg">{{ exp.title }}</span>
+        <span class="text-base-content/50 font-normal text-sm">({{ exp.fecha }})</span>
+      </div>
+      <p class="mb-4 text-base-content/80">
+        {{ exp.description }}
+      </p>
+      <div class="space-y-4">
+        @for (proyecto of exp.proyectos; track proyecto.nombre) {
+        <div class="p-3 rounded-lg border border-base-300">
+          <h4 class="font-semibold text-base-content">{{ proyecto.nombre }}</h4>
+          <div class="mt-2 flex flex-wrap gap-2">
+            @for (tech of proyecto.tecnologias; track tech.nombre) {
+            <div class="badge badge-soft badge-{{exp.color}}">{{ tech.nombre }}</div>
+            }
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+
+    @if (i
+    < experiencias.length - 1) { <hr />
+    }
+  </li>
+  }
 </ul>
