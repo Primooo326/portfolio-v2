@@ -21,6 +21,35 @@ export class HomeComponent {
 
   proyectos: Proyecto[] = [
     {
+      nombre: "VROOM-OSRM Colombia",
+      link: "https://osrm.primooo.dev",
+      icon: "https://project-osrm.org/favicon.ico",
+      descripcion: "Herramienta de logística y ruteo para Colombia. Calcula rutas óptimas, optimiza flotas de vehículos (VRP/TSP) y genera matrices de distancia con 5 perfiles vehiculares, desde motos hasta camiones pesados. Interfaz interactiva con mapas Leaflet, temas visuales y soporte multiidioma.",
+      tecnologias: [
+        {
+          link: "assets/icons/react.svg",
+          nombre: "React"
+        },
+        {
+          link: "https://project-osrm.org/favicon.ico",
+          nombre: "OSRM + VROOM"
+        },
+        {
+          link: "assets/icons/docker.svg",
+          nombre: "Docker"
+        },
+        {
+          link: "assets/icons/linux.svg",
+          nombre: "Linux"
+        },
+        {
+          link: "assets/icons/nginx.svg",
+          nombre: "Nginx"
+        },
+
+      ]
+    },
+    {
       nombre: "Nexus Business TechAssessor",
       link: "https://nexus-business-techassesor.web.app/",
       icon: "https://nexus-business-techassesor.web.app/_astro/NBT.Dh4EQEsa_Z2funTE.svg",
@@ -36,7 +65,6 @@ export class HomeComponent {
         },
       ]
     },
-
     {
       nombre: "Oberon 360",
       link: "https://dev.oberon360.com/auth",
@@ -158,6 +186,7 @@ export class HomeComponent {
       ]
     },
 
+
   ]
 
   herramientas = [
@@ -176,11 +205,6 @@ export class HomeComponent {
       descripcion: "Calcula el valor de un investimento en un periodo de tiempo con un interes anual.",
       handler: () => this.currentH.set("interes compuesto")
     }
-    // {
-    //   nombre: "Descarga musica de Youtube",
-    //   descripcion: "Descarga musica de Youtube en formato mp3.",
-    //   handler: () => { }
-    // }
   ]
 
   interval = 0
