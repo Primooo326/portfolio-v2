@@ -20,6 +20,19 @@ export class HomeComponent {
 
 
   proyectos: Proyecto[] = [
+    // Dentro de tu array proyectos: Proyecto[]
+    {
+      nombre: "Jitsi Streaming Cloud",
+      link: "https://jitsi.primooo.dev",
+      icon: "assets/icons/Logo_Jitsi.svg.png",
+      descripcion: "Infraestructura privada de videoconferencias con escalabilidad para streaming profesional. Implementado con Jibri para retransmisión en vivo a YouTube/RTMP, configuración de Prosody para dominios internos y optimización de captura en modo Kiosko.",
+      tecnologias: [
+        { link: "assets/icons/docker.svg", nombre: "Docker & Compose" },
+        { link: "assets/icons/linux.svg", nombre: "Ubuntu Server" },
+        { link: "assets/icons/nginx.svg", nombre: "Nginx Reverse Proxy" },
+        { link: "assets/icons/bash_dark.svg", nombre: "Shell Scripting" }
+      ]
+    },
     {
       nombre: "VROOM-OSRM Colombia",
       link: "https://osrm.primooo.dev",
@@ -46,6 +59,7 @@ export class HomeComponent {
           link: "assets/icons/nginx.svg",
           nombre: "Nginx"
         },
+        { link: "assets/icons/bash_dark.svg", nombre: "Shell Scripting" }
 
       ]
     },
