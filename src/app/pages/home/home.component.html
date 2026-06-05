@@ -116,3 +116,8 @@
   containerClass="w-[800px]" title="Interes Compuesto">
   <app-interes-compuesto></app-interes-compuesto>
 </app-modal>
+
+<app-modal [isVisible]="currentH() === 'whisper-transcribe'" (visibleChange)="currentH.set('')"
+  containerClass="w-[950px] max-w-[95vw]" title="Transcripción de Audio con Groq Whisper">
+  <app-whisper-transcribe></app-whisper-transcribe>
+</app-modal>

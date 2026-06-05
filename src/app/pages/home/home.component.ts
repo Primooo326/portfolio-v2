@@ -9,10 +9,11 @@ import { CompressorImgComponent } from '../../components/compressor-img/compress
 import { ModalComponent } from '../../components/modal/modal.component';
 import { TimelineComponent } from '../../components/timeline/timeline.component';
 import { InterestCalculatorComponent } from '../../components/interes-compuesto/interes-compuesto.component';
+import { WhisperTranscribeComponent } from '../../components/whisper-transcribe/whisper-transcribe.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CardProyectoComponent, FooterComponent, CardHerramientaComponent, ModalComponent, CompressorImgComponent, QrCodeComponent, TimelineComponent, InterestCalculatorComponent],
+  imports: [CommonModule, CardProyectoComponent, FooterComponent, CardHerramientaComponent, ModalComponent, CompressorImgComponent, QrCodeComponent, TimelineComponent, InterestCalculatorComponent, WhisperTranscribeComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -218,6 +219,11 @@ export class HomeComponent {
       nombre: "Interes Compuesto",
       descripcion: "Calcula el valor de un investimento en un periodo de tiempo con un interes anual.",
       handler: () => this.currentH.set("interes compuesto")
+    },
+    {
+      nombre: "Transcripción de Audio",
+      descripcion: "Sube varios archivos de audio y transcríbelos usando la API de Groq (Whisper).",
+      handler: () => this.currentH.set("whisper-transcribe")
     }
   ]
 
