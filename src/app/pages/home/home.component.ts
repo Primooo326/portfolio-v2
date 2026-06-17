@@ -126,7 +126,8 @@ export class HomeComponent {
           link: "assets/icons/mysql.svg",
           nombre: "MySql"
         },
-      ]
+      ],
+      noDisponible: true
     },
     {
       nombre: "Cursos Adobe",
@@ -162,13 +163,14 @@ export class HomeComponent {
           link: "assets/icons/mysql.svg",
           nombre: "MySql"
         },
-      ]
+      ],
+      noDisponible: true
     },
     {
       nombre: "Fitnesspro",
       link: "https://fitnesspro-co.web.app/",
       icon: "https://fitnesspro-co.web.app/favicon.svg",
-      descripcion: "FitnessPro es una página web diseñada para inspirar y guiar a las personas en su viaje hacia un estilo de vida más saludable y activo. Con un diseño moderno, oscuro y dinámico, esta plataforma ofrece una experiencia inmersiva para los amantes del fitness.",
+      descripcion: "FitnessPro es una página web diseñada para inspirar y guiar a las personas en su viaje hacia un estilo de vida más saludable y activo. Con un diseño moderno, oscuro and dinámico, esta plataforma ofrece una experiencia inmersiva para los amantes del fitness.",
       tecnologias: [
         {
           link: "assets/icons/astro.svg",
@@ -178,7 +180,8 @@ export class HomeComponent {
           link: "assets/icons/cloudflare.svg",
           nombre: "Cloudflare"
         },
-      ]
+      ],
+      noDisponible: true
     },
     {
       nombre: "Networking Miami",
@@ -198,7 +201,8 @@ export class HomeComponent {
           link: "assets/icons/mysql.svg",
           nombre: "MySql"
         },
-      ]
+      ],
+      noDisponible: true
     },
 
 

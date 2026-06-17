@@ -21,8 +21,14 @@
     }
 
   </div>
+  @if (proyecto.noDisponible) {
+  <button class="btn btn-neutral w-full mt-3 opacity-50 cursor-not-allowed" disabled>
+    (sitio no disponible)
+  </button>
+  } @else {
   <a [href]="proyecto.link" target="_blank" class="btn btn-success w-full mt-3"> Visitar sitio web <i
       class="fas fa-chevron-right me-3"></i> </a>
+  }
 
 
 </div>

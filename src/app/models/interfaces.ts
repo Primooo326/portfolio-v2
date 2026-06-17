@@ -3,7 +3,8 @@ export interface Proyecto {
   link: string,
   icon: string
   descripcion: string,
-  tecnologias: Tecnologia[]
+  tecnologias: Tecnologia[],
+  noDisponible?: boolean
 }
 export interface Tecnologia {
   link: string,
