@@ -1,109 +1,166 @@
-<div class="flex flex-col p-4 space-y-4 w-full h-full overflow-x-hidden overflow-y-auto">
+<div class="flex flex-col p-2 space-y-5 w-full h-full text-white">
+  <!-- Info / Instrucciones de uso (Collapsible) -->
+  <details class="collapse bg-neutral-800/40 border border-neutral-700/60 rounded-xl">
+    <summary class="collapse-title text-sm font-semibold text-white cursor-pointer hover:text-success flex items-center gap-2">
+      <i class="fas fa-info-circle text-success"></i> ¿Cómo usar el Compresor de Imágenes? (Haz clic para expandir)
+    </summary>
+    <div class="collapse-content text-sm text-gray-300 px-4 pb-4 leading-relaxed space-y-1">
+      <p>1. Selecciona o arrastra una o varias imágenes usando el selector de archivos.</p>
+      <p>2. Ajusta el nivel de <strong>Calidad</strong> mediante la barra deslizadora para controlar la compresión en tiempo real.</p>
+      <p>3. Utiliza el comparador deslizante visual para inspeccionar el cambio de calidad de la imagen seleccionada.</p>
+      <p>4. Presiona el botón <strong>"Descargar"</strong> para empaquetar y descargar todas las imágenes optimizadas en un archivo ZIP.</p>
+    </div>
+  </details>
+
   <!-- Visualizador de comparación con loader -->
   @if(currentFileCompressed()) {
-  <div class="relative">
+  <div class="relative bg-neutral-800/20 border border-neutral-700/40 rounded-xl p-4 space-y-4">
     <!-- Loader -->
     @if(loading()) {
-    <div class="absolute inset-0 flex items-center justify-center bg-base-300 bg-opacity-90 z-10 rounded">
+    <div class="absolute inset-0 flex items-center justify-center bg-black/70 z-10 rounded-xl">
       <span class="loading loading-spinner loading-lg text-success"></span>
     </div>
     }
 
-    <div class="diff aspect-video">
+    <div class="flex justify-between items-center pb-2 border-b border-neutral-700">
+      <span class="text-xs text-success font-semibold uppercase tracking-wider">Comparador de Compresión</span>
+      <span class="text-xs text-gray-400 font-mono truncate max-w-[200px]" [title]="currentFileCompressed()?.file?.name">
+        {{ currentFileCompressed()?.file?.name }}
+      </span>
+    </div>
+
+    <!-- Comparador Split View -->
+    <div class="diff aspect-video w-full rounded-lg overflow-hidden border border-neutral-700/50">
       <div class="diff-item-1">
-        <img alt="normal" class="rounded" [src]="currentFileCompressed()?.preview" />
+        <img alt="Original" [src]="currentFileCompressed()?.preview" />
       </div>
       <div class="diff-item-2">
-        <img alt="comprimido" class="rounded" [src]="currentFileCompressed()?.previewCompressed" />
+        <img alt="Comprimido" [src]="currentFileCompressed()?.previewCompressed" />
       </div>
       <div class="diff-resizer"></div>
     </div>
-  </div>
 
-  <!-- Control de calidad -->
-  <div class="flex flex-col md:flex-row items-center gap-2 w-full">
-    <h1 class="text-white font-bold w-[120px]">
-      Calidad: {{ quality() * 100 }} %
-    </h1>
-    <input type="range" class="range range-success bg-secondary" aria-label="range" (change)="onChangeQuality($event)"
-      [value]="quality() * 100" [disabled]="loading()" />
-  </div>
+    <!-- Control de calidad -->
+    <div class="flex flex-col sm:flex-row items-center gap-4 w-full bg-neutral-900/40 p-3 rounded-lg border border-neutral-700/30">
+      <h4 class="text-sm font-bold text-gray-300 w-full sm:w-[150px] text-center sm:text-left">
+        Calidad: <span class="text-success font-mono">{{ quality() * 100 }}%</span>
+      </h4>
+      <input
+        type="range"
+        class="range range-success bg-neutral-800 flex-grow"
+        aria-label="range"
+        (change)="onChangeQuality($event)"
+        [value]="quality() * 100"
+        [disabled]="loading()"
+      />
+    </div>
 
-  <!-- Tamaño ahorrado -->
-  @if(fileInputs().length > 0) {
-  <h1 class="text-white">
-    Tamaño ahorrado: {{totalSavedBytes()}} MB
-  </h1>
-  }
+    <!-- Tamaño ahorrado -->
+    @if(fileInputs().length > 0) {
+    <div class="flex justify-between items-center text-sm font-medium p-2 bg-success/10 border border-success/30 rounded-lg text-success">
+      <span>Ahorro de espacio total:</span>
+      <span class="font-bold font-mono">{{totalSavedBytes()}} MB</span>
+    </div>
+    }
+  </div>
   }
 
   <!-- Controles de archivo -->
-  <div class="flex flex-col md:flex-row gap-4 w-full">
-    <input type="file" class="input w-full p-2" multiple accept="image/*" (change)="onFileInputChange($event)"
-      [disabled]="loading()" />
+  <div class="flex flex-col sm:flex-row gap-3 w-full items-stretch">
+    <input
+      type="file"
+      class="file-input file-input-bordered file-input-success w-full bg-neutral-900 text-white border-neutral-700 focus:border-success focus:outline-none flex-grow"
+      multiple
+      accept="image/*"
+      (change)="onFileInputChange($event)"
+      [disabled]="loading()"
+    />
     @if(fileInputs().length > 0) {
-    <button class="btn btn-success" [disabled]="loading()" (click)="downloadZip()">
-      Descargar
+    <button
+      class="btn btn-success text-success-content px-6 flex-shrink-0 hover:scale-[1.02] transition-transform"
+      [disabled]="loading()"
+      (click)="downloadZip()"
+    >
+      <i class="fas fa-download"></i> Descargar Todo (ZIP)
     </button>
     }
   </div>
 
   <!-- Lista de archivos -->
-  <div class="space-y-2">
+  <div class="space-y-3">
+    <div class="flex justify-between items-center border-b border-neutral-700 pb-1.5">
+      <h4 class="text-white font-semibold text-sm">Lista de imágenes</h4>
+    </div>
+
     @if (fileInputs().length === 0 && !defaultImage()) {
-    <p class="text-white">No hay imágenes seleccionadas</p>
+    <div class="text-center py-6 text-gray-500 bg-neutral-800/10 border border-dashed border-neutral-700 rounded-xl">
+      <i class="fas fa-images text-3xl mb-2 block"></i>
+      <span class="text-sm">No hay imágenes seleccionadas</span>
+    </div>
     }
 
     <!-- Mostrar imagen por defecto con loader -->
     @if (defaultImage() && fileInputs().length === 0) {
-    <div class="relative">
+    <div class="relative bg-neutral-800/30 border border-neutral-700/60 rounded-xl p-4">
       <!-- Loader para la imagen por defecto -->
       @if(loading()) {
-      <div class="absolute inset-0 flex items-center justify-center bg-base-300 bg-opacity-75 z-10 rounded">
+      <div class="absolute inset-0 flex items-center justify-center bg-black/75 z-10 rounded-xl">
         <span class="loading loading-spinner loading-lg text-success"></span>
       </div>
       }
 
-      <div
-        class="flex flex-col md:flex-row justify-between items-center w-full md:max-h-[150px] rounded cursor-pointer overflow-hidden">
-        <img [src]="defaultImage()?.preview" alt="Imagen por defecto"
-          class="aspect-video md:aspect-square md:h-full w-full md:w-1/4 p-2 md:p-0 object-cover rounded">
-        <div class="flex flex-col md:w-3/4 w-full md:items-start p-2 space-y-1 overflow-hidden">
-          <h1 class="text-white text-lg">Imagen de ejemplo</h1>
-          <p class="text-white text-sm">Tamaño: {{ defaultImage()?.size }} MB</p>
-          <p class="text-white text-sm">Nuevo tamaño: {{ defaultImage()?.newSize ? defaultImage()?.newSize : 0 }} MB</p>
-          <p class="text-secondary-content text-sm">
-            Porcentaje comprimido: {{ defaultImage()?.compressionPercentage ? defaultImage()?.compressionPercentage : 0
-            }}%
-          </p>
-
+      <div class="flex flex-col md:flex-row justify-between items-center w-full gap-4">
+        <img
+          [src]="defaultImage()?.preview"
+          alt="Imagen de ejemplo"
+          class="aspect-video md:aspect-square w-full md:w-[100px] h-[100px] object-cover rounded-lg border border-neutral-700"
+        />
+        <div class="flex-grow space-y-1 text-center md:text-left">
+          <h1 class="text-white text-base font-bold">Imagen de ejemplo</h1>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-gray-400">
+            <div>Original: <strong class="text-white font-mono">{{ defaultImage()?.size }} MB</strong></div>
+            <div>Comprimido: <strong class="text-white font-mono">{{ defaultImage()?.newSize ? defaultImage()?.newSize : 0 }} MB</strong></div>
+            <div>Ahorro: <strong class="text-success font-mono">{{ defaultImage()?.compressionPercentage ? defaultImage()?.compressionPercentage : 0 }}%</strong></div>
+          </div>
         </div>
       </div>
     </div>
     }
 
     <!-- Lista de archivos cargados -->
-    @for (item of fileInputs(); track $index) {
-    <div class="relative">
-
-      <div (click)="currentFileCompressed.set(item)"
-        class="flex flex-col md:flex-row justify-between items-center w-full md:max-h-[150px] rounded cursor-pointer overflow-hidden">
-        <!-- [class.border.border-secondary]="currentFileCompressed()?.id === item.id" -->
-        <img [src]="item.preview" [alt]="item.file.name"
-          class="aspect-video md:aspect-square md:h-full w-full md:w-1/4 p-0 object-cover rounded">
-        <div class="flex flex-col md:w-3/4 w-full md:items-start p-2 space-y-1 overflow-hidden">
-          <h1 class="text-white text-lg truncate w-full overflow-hidden">{{ item.file.name }}</h1>
-          <p class="text-white text-sm">Tamaño: {{ item.size }} MB</p>
-          <p class="text-white text-sm">Nuevo tamaño: {{ item.newSize ? item.newSize : 0 }} MB</p>
-          <p class="text-secondary-content text-sm">
-            Porcentaje comprimido: {{ item.compressionPercentage ? item.compressionPercentage : 0 }}%
-          </p>
-          <button class="btn btn-error btn-sm btn-outline" (click)="removeFile(item)" [disabled]="loading()">
-            Eliminar
-          </button>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      @for (item of fileInputs(); track $index) {
+      <div
+        (click)="currentFileCompressed.set(item)"
+        [ngClass]="{
+          'border-success bg-success/5': currentFileCompressed()?.id === item.id,
+          'border-neutral-700 bg-neutral-850 hover:border-gray-500': currentFileCompressed()?.id !== item.id
+        }"
+        class="flex flex-row justify-between items-center p-3 rounded-xl border cursor-pointer transition-all duration-200 gap-4"
+      >
+        <img
+          [src]="item.preview"
+          [alt]="item.file.name"
+          class="w-[80px] h-[80px] object-cover rounded-lg border border-neutral-700 flex-shrink-0"
+        />
+        <div class="flex-grow space-y-1 min-w-0">
+          <h4 class="text-white text-sm font-semibold truncate" [title]="item.file.name">{{ item.file.name }}</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-0.5 text-xs text-gray-400">
+            <div>Original: <span class="text-white font-mono">{{ item.size }} MB</span></div>
+            <div>Nuevo: <span class="text-white font-mono">{{ item.newSize ? item.newSize : 0 }} MB</span></div>
+            <div class="sm:col-span-2 text-success">Reducido: <span class="font-bold font-mono">{{ item.compressionPercentage ? item.compressionPercentage : 0 }}%</span></div>
+          </div>
         </div>
+        <button
+          class="btn btn-square btn-error btn-outline btn-sm flex-shrink-0"
+          (click)="removeFile(item); $event.stopPropagation()"
+          [disabled]="loading()"
+          title="Eliminar"
+        >
+          <i class="fas fa-trash text-xs"></i>
+        </button>
       </div>
+      }
     </div>
-    }
   </div>
 </div>

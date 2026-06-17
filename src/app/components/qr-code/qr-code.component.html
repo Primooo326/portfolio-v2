@@ -1,14 +1,50 @@
-<div class="w-full flex flex-col justify-center items-center space-y-2 p-4">
-  <canvas class="w-full" #qrCanvas></canvas>
+<div class="w-full text-white p-2">
+  <!-- Info / Instrucciones de uso (Collapsible) -->
+  <details class="collapse bg-neutral-800/40 border border-neutral-700/60 rounded-xl mb-6">
+    <summary class="collapse-title text-sm font-semibold text-white cursor-pointer hover:text-success flex items-center gap-2">
+      <i class="fas fa-info-circle text-success"></i> ¿Cómo usar el Generador de Código QR? (Haz clic para expandir)
+    </summary>
+    <div class="collapse-content text-sm text-gray-300 px-4 pb-4 leading-relaxed space-y-1">
+      <p>1. Escribe o pega cualquier enlace (URL), texto plano o número de contacto en el campo de entrada.</p>
+      <p>2. El código QR se generará de manera instantánea y en tiempo real.</p>
+      <p>3. Utiliza el botón <strong>"Descargar PNG"</strong> para guardar el código en tu dispositivo, o presiona <strong>"Compartir"</strong> para enviarlo mediante las redes compatibles de tu sistema.</p>
+    </div>
+  </details>
 
-  <textarea class="textarea textarea-bordered w-full" data-theme="ligth" [(ngModel)]="qrData"
-    (ngModelChange)="onInputChange()" placeholder="Tu texto o URL aquí"></textarea>
-  <div class="w-full flex justify-between">
-    <button class="btn btn-success" (click)="downloadQR()">
-      Descargar PNG
-    </button>
-    <button class="btn btn-info" (click)="shareQR()">
-      Compartir
-    </button>
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+    <!-- Columna Izquierda: Entrada de texto y Botones -->
+    <div class="md:col-span-7 space-y-4">
+      <div>
+        <label class="label">
+          <span class="label-text text-gray-300 font-semibold flex items-center gap-2">
+            <i class="fas fa-link text-success"></i> Texto o URL
+          </span>
+          <span class="label-text-alt text-gray-400">Contenido a codificar</span>
+        </label>
+        <textarea
+          class="textarea textarea-bordered bg-neutral-900 border-neutral-700 text-white w-full h-[120px] focus:border-success focus:ring-success placeholder:text-neutral-500 font-mono"
+          placeholder="Escribe tu enlace aquí (ej: https://primooo.dev)"
+          [(ngModel)]="qrData"
+          (ngModelChange)="onInputChange()"
+        ></textarea>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3">
+        <button (click)="downloadQR()" class="btn btn-success text-success-content flex-1 hover:scale-[1.02] transition-transform">
+          <i class="fas fa-download"></i> Descargar PNG
+        </button>
+        <button (click)="shareQR()" class="btn btn-outline btn-success flex-1 hover:scale-[1.02] transition-transform">
+          <i class="fas fa-share-alt"></i> Compartir
+        </button>
+      </div>
+    </div>
+
+    <!-- Columna Derecha: Previsualización QR -->
+    <div class="md:col-span-5 flex flex-col items-center justify-center bg-neutral-800/30 border border-neutral-700/40 rounded-xl p-6">
+      <span class="text-xs text-gray-400 mb-3 font-semibold uppercase tracking-wider">Vista Previa</span>
+      <div class="bg-white p-4 rounded-xl shadow-lg flex justify-center items-center max-w-[200px]">
+        <canvas #qrCanvas class="w-full h-auto"></canvas>
+      </div>
+    </div>
   </div>
 </div>
