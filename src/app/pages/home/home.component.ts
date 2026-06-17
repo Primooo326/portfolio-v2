@@ -10,10 +10,26 @@ import { ModalComponent } from '../../components/modal/modal.component';
 import { TimelineComponent } from '../../components/timeline/timeline.component';
 import { InterestCalculatorComponent } from '../../components/interes-compuesto/interes-compuesto.component';
 import { WhisperTranscribeComponent } from '../../components/whisper-transcribe/whisper-transcribe.component';
+import { ListCleanerComponent } from '../../components/list-cleaner/list-cleaner.component';
+import { NumberToWordsComponent } from '../../components/number-to-words/number-to-words.component';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CardProyectoComponent, FooterComponent, CardHerramientaComponent, ModalComponent, CompressorImgComponent, QrCodeComponent, TimelineComponent, InterestCalculatorComponent, WhisperTranscribeComponent],
+  imports: [
+    CommonModule,
+    CardProyectoComponent,
+    FooterComponent,
+    CardHerramientaComponent,
+    ModalComponent,
+    CompressorImgComponent,
+    QrCodeComponent,
+    TimelineComponent,
+    InterestCalculatorComponent,
+    WhisperTranscribeComponent,
+    ListCleanerComponent,
+    NumberToWordsComponent
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -228,6 +244,16 @@ export class HomeComponent {
       nombre: "Transcripción de Audio",
       descripcion: "Sube varios archivos de audio y transcríbelos usando la API de Groq (Whisper).",
       handler: () => this.currentH.set("whisper-transcribe")
+    },
+    {
+      nombre: "Depurador de Listas",
+      descripcion: "Limpia espacios, elimina duplicados, ordena alfabéticamente y formatea listas de texto o Excel.",
+      handler: () => this.currentH.set("list-cleaner")
+    },
+    {
+      nombre: "Números a Letras",
+      descripcion: "Convierte cifras numéricas a texto en español con formato personalizable para facturas y recibos.",
+      handler: () => this.currentH.set("number-to-words")
     }
   ]
 

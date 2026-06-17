@@ -121,3 +121,13 @@
   containerClass="w-[950px] max-w-[95vw]" title="Transcripción de Audio con Groq Whisper">
   <app-whisper-transcribe></app-whisper-transcribe>
 </app-modal>
+
+<app-modal [isVisible]="currentH() === 'list-cleaner'" (visibleChange)="currentH.set('')"
+  containerClass="w-[950px] max-w-[95vw]" title="Depurador y Limpiador de Listas">
+  <app-list-cleaner></app-list-cleaner>
+</app-modal>
+
+<app-modal [isVisible]="currentH() === 'number-to-words'" (visibleChange)="currentH.set('')"
+  containerClass="w-[900px] max-w-[95vw]" title="Convertidor de Números a Letras">
+  <app-number-to-words></app-number-to-words>
+</app-modal>

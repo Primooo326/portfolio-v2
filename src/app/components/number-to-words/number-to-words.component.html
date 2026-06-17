@@ -1,0 +1,112 @@
+<div class="w-full text-white p-2">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Columna Izquierda: Entrada y Configuración -->
+    <div class="lg:col-span-6 space-y-4">
+      <div>
+        <label class="label">
+          <span class="label-text text-gray-300 font-semibold flex items-center gap-2">
+            <i class="fas fa-coins text-success"></i> Cantidad Numérica
+          </span>
+          <span class="label-text-alt text-gray-400">Ingresa la cifra (ej. 1254350.50)</span>
+        </label>
+        <div class="relative">
+          <input
+            type="text"
+            class="input input-bordered w-full bg-neutral-900 border-neutral-700 text-white text-lg pl-10 focus:border-success focus:ring-1 focus:ring-success placeholder:text-neutral-500 font-mono"
+            placeholder="1254350.50"
+            [(ngModel)]="inputNumber"
+            (ngModelChange)="convert()"
+          />
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-neutral-500">
+            <span class="font-mono text-lg">$</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Configuración -->
+      <div class="bg-neutral-800/50 border border-neutral-700/60 rounded-xl p-4 space-y-4">
+        <h3 class="text-sm font-bold text-success uppercase tracking-wider flex items-center gap-2">
+          <i class="fas fa-cog"></i> Configuración de Formato
+        </h3>
+
+        <div class="space-y-3">
+          <div>
+            <label class="text-xs text-gray-400 block mb-1">Unidad Monetaria (Moneda)</label>
+            <select [(ngModel)]="selectedMoneda" (ngModelChange)="convert()" class="select select-bordered select-sm w-full bg-neutral-900 border-neutral-700 text-white focus:border-success">
+              <option value="PESOS">PESOS (ej: COL, MXN, ARS)</option>
+              <option value="DÓLARES">DÓLARES (USD)</option>
+              <option value="EUROS">EUROS (EUR)</option>
+              <option value="SOLES">SOLES (PEN)</option>
+              <option value="BOLÍVARES">BOLÍVARES (VES)</option>
+              <option value="">Ninguna (Solo el número en letras)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs text-gray-400 block mb-1">Nombre de Centavos / Fracción</label>
+            <select [(ngModel)]="selectedCentavos" (ngModelChange)="convert()" class="select select-bordered select-sm w-full bg-neutral-900 border-neutral-700 text-white focus:border-success">
+              <option value="CENTAVOS">CENTAVOS</option>
+              <option value="CÉNTIMOS">CÉNTIMOS</option>
+              <option value="/100 M.N.">/100 M.N. (Moneda Nacional)</option>
+              <option value="">Ninguno</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs text-gray-400 block mb-1">Formato de Texto</label>
+            <select [(ngModel)]="selectedFormato" (ngModelChange)="convert()" class="select select-bordered select-sm w-full bg-neutral-900 border-neutral-700 text-white focus:border-success">
+              <option value="MAYUSCULAS">MAYÚSCULAS</option>
+              <option value="minusculas">minúsculas</option>
+              <option value="Titulo">Tipo Título (Primera Letra Mayúscula)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna Derecha: Resultado en Letras -->
+    <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+      <div>
+        <label class="label">
+          <span class="label-text text-gray-300 font-semibold flex items-center gap-2">
+            <i class="fas fa-spell-check text-success"></i> Texto Generado (Lectura en Letras)
+          </span>
+        </label>
+        <textarea
+          readonly
+          class="textarea textarea-bordered bg-neutral-900 border-neutral-700 text-success w-full h-[155px] focus:border-success focus:ring-1 focus:ring-success font-medium placeholder:text-neutral-600 leading-relaxed"
+          placeholder="El texto en letras aparecerá aquí..."
+          [value]="outputText"
+        ></textarea>
+      </div>
+
+      <!-- Cuadro informativo / Tips de facturación -->
+      <div class="bg-neutral-800/30 border border-neutral-700/40 rounded-xl p-3 text-xs text-gray-400 flex items-start gap-2.5">
+        <i class="fas fa-info-circle text-info mt-0.5"></i>
+        <div>
+          <p class="font-semibold text-gray-300">Tip de Ofimática:</p>
+          <p>Esta conversión se utiliza habitualmente en facturación para la sección "Son: [Cifra en Letras]" y evitar discrepancias en contratos legales.</p>
+        </div>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="flex gap-3 pt-2">
+        <button
+          [disabled]="!outputText"
+          (click)="copyToClipboard()"
+          class="btn flex-1 transition-all duration-200"
+          [ngClass]="isCopied ? 'btn-success text-success-content' : 'btn-outline btn-success hover:scale-[1.02]'"
+        >
+          <i class="fas" [ngClass]="isCopied ? 'fa-check' : 'fa-copy'"></i>
+          {{ isCopied ? '¡Copiado!' : 'Copiar Texto' }}
+        </button>
+        <button
+          (click)="clearAll()"
+          class="btn btn-outline btn-error hover:scale-[1.02]"
+        >
+          <i class="fas fa-trash-alt"></i> Limpiar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
