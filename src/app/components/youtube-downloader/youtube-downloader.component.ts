@@ -88,7 +88,24 @@ export class YoutubeDownloaderComponent implements OnInit, OnDestroy {
   loading = false;
   private pollIntervalId: any = null;
 
+  // Importar Job ID
+  showImportInput = false;
+  importJobIdValue = '';
+
+  // Copiar Job ID
+  jobIdCopied = false;
+
+  // Notificaciones
+  notificationsEnabled = false;
+  notificationPermission: NotificationPermission = 'default';
+
   ngOnInit() {
+    // Verificar estado de permisos de notificación
+    if ('Notification' in window) {
+      this.notificationPermission = Notification.permission;
+      this.notificationsEnabled = Notification.permission === 'granted';
+    }
+
     // Cargar Job ID activo si existe en localStorage para reanudar el polling
     const savedJobId = localStorage.getItem('yt_downloader_job_id');
     if (savedJobId) {
@@ -107,6 +124,82 @@ export class YoutubeDownloaderComponent implements OnInit, OnDestroy {
     this.format = this.mode === 'video' ? 'mp4' : 'mp3';
   }
 
+  /** Solicitar permiso de notificaciones */
+  async requestNotificationPermission() {
+    if (!('Notification' in window)) {
+      alert('Tu navegador no soporta notificaciones.');
+      return;
+    }
+    const permission = await Notification.requestPermission();
+    this.notificationPermission = permission;
+    this.notificationsEnabled = permission === 'granted';
+  }
+
+  /** Enviar notificación del navegador */
+  private sendNotification(title: string, body: string) {
+    if (!this.notificationsEnabled || !('Notification' in window)) return;
+    try {
+      const notification = new Notification(title, {
+        body,
+        icon: 'assets/icons/youtube.png',
+        badge: 'assets/icons/youtube.png',
+        tag: 'yt-download-' + this.jobId,
+      });
+      // Al hacer clic en la notificación, enfocar la pestaña
+      notification.onclick = () => {
+        window.focus();
+        notification.close();
+      };
+    } catch (e) {
+      console.warn('Error al enviar notificación:', e);
+    }
+  }
+
+  /** Copiar el Job ID al portapapeles */
+  async copyJobId() {
+    if (!this.jobId) return;
+    try {
+      await navigator.clipboard.writeText(this.jobId);
+      this.jobIdCopied = true;
+      setTimeout(() => {
+        this.jobIdCopied = false;
+      }, 2000);
+    } catch {
+      // Fallback: seleccionar texto manualmente
+      const el = document.createElement('textarea');
+      el.value = this.jobId;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      this.jobIdCopied = true;
+      setTimeout(() => {
+        this.jobIdCopied = false;
+      }, 2000);
+    }
+  }
+
+  /** Importar un Job ID externo para consultar su estado */
+  importJob() {
+    const id = this.importJobIdValue.trim();
+    if (!id) {
+      alert('Por favor ingresa un ID de trabajo válido.');
+      return;
+    }
+    this.jobId = id;
+    this.status = 'pending';
+    this.progress = 0;
+    this.eta = '';
+    this.currentItem = null;
+    this.totalItems = null;
+    this.failedVideos = [];
+    this.failedCount = 0;
+    this.error = null;
+    this.showImportInput = false;
+    this.importJobIdValue = '';
+    localStorage.setItem('yt_downloader_job_id', id);
+    this.startPolling();
+  }
 
 
   async startDownload() {
@@ -225,8 +318,18 @@ export class YoutubeDownloaderComponent implements OnInit, OnDestroy {
         this.error = data.error;
       }
 
-      if (this.status === 'completed' || this.status === 'failed') {
+      if (this.status === 'completed') {
         this.stopPolling();
+        this.sendNotification(
+          '✅ Descarga Completada',
+          'Tu archivo de YouTube está listo para descargar.'
+        );
+      } else if (this.status === 'failed') {
+        this.stopPolling();
+        this.sendNotification(
+          '❌ Descarga Fallida',
+          this.error || 'Ocurrió un error durante la descarga.'
+        );
       }
     } catch (err: any) {
       console.error('Error durante polling:', err);
@@ -276,5 +379,7 @@ export class YoutubeDownloaderComponent implements OnInit, OnDestroy {
     this.failedCount = 0;
     this.error = null;
     this.youtubeUrl = '';
+    this.showImportInput = false;
+    this.importJobIdValue = '';
   }
 }

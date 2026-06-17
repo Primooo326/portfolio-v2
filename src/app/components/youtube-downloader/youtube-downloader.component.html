@@ -24,6 +24,19 @@
       </h2>
       <p class="text-xs text-gray-400">Descarga vídeos y listas de reproducción completas de forma asíncrona.</p>
     </div>
+
+    <!-- Toggle de Notificaciones -->
+    <button
+      type="button"
+      (click)="requestNotificationPermission()"
+      class="flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all"
+      [class]="notificationsEnabled
+        ? 'border-success/40 bg-success/10 text-success'
+        : 'border-neutral-700 bg-neutral-900 text-gray-400 hover:text-white hover:border-neutral-500'"
+    >
+      <i class="fas" [ngClass]="notificationsEnabled ? 'fa-bell text-success' : 'fa-bell-slash'"></i>
+      {{ notificationsEnabled ? 'Notificaciones activas' : (notificationPermission === 'denied' ? 'Notificaciones bloqueadas' : 'Activar notificaciones') }}
+    </button>
   </div>
 
   <!-- PANTALLA A: FORMULARIO DE DESCARGA -->
@@ -148,6 +161,49 @@
         {{ loading ? 'Iniciando trabajo de descarga...' : 'Comenzar Descarga' }}
       </button>
     </div>
+
+    <!-- Separador con "o" -->
+    <div class="flex items-center gap-3 pt-1">
+      <div class="flex-grow border-t border-neutral-700/60"></div>
+      <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">o</span>
+      <div class="flex-grow border-t border-neutral-700/60"></div>
+    </div>
+
+    <!-- Importar Job ID -->
+    <div class="space-y-3">
+      <button
+        type="button"
+        (click)="showImportInput = !showImportInput"
+        class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-dashed border-neutral-600 bg-neutral-900/40 text-gray-400 text-xs font-semibold hover:text-white hover:border-neutral-500 transition-all"
+      >
+        <i class="fas fa-file-import"></i>
+        Importar un Job ID existente
+        <i class="fas fa-chevron-down text-[10px] transition-transform" [class.rotate-180]="showImportInput"></i>
+      </button>
+
+      <div *ngIf="showImportInput" class="bg-neutral-800/40 border border-neutral-700/60 rounded-xl p-4 space-y-3 animate-fade-in">
+        <p class="text-[11px] text-gray-400">
+          <i class="fas fa-info-circle text-info mr-1"></i>
+          ¿Iniciaste una descarga desde otro dispositivo? Pega aquí el ID del trabajo para consultar su estado y descargarlo cuando esté listo.
+        </p>
+        <div class="flex gap-2">
+          <input
+            type="text"
+            [(ngModel)]="importJobIdValue"
+            placeholder="Ej: f7d7301c-6d1a-4933-912f-659f81ebad94"
+            class="input input-bordered flex-grow bg-neutral-900 border-neutral-700 text-white focus:border-success placeholder:text-neutral-600 text-xs font-mono"
+          />
+          <button
+            type="button"
+            (click)="importJob()"
+            class="btn btn-success btn-sm text-success-content font-bold px-4"
+            [disabled]="!importJobIdValue.trim()"
+          >
+            <i class="fas fa-search"></i> Consultar
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- PANTALLA B: SEGUIMIENTO DE PROGRESO (TRABAJO ACTIVO) -->
@@ -156,11 +212,26 @@
       
       <!-- Estado y Cabecera del Trabajo -->
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-neutral-700/60 pb-4">
-        <div>
+        <div class="space-y-2">
           <span class="text-[10px] text-gray-400 font-semibold tracking-wider uppercase">ID del Trabajo Activo</span>
-          <div class="text-xs font-mono text-white flex items-center gap-2 mt-0.5">
-            {{ jobId }}
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="text-xs font-mono text-white bg-neutral-900 px-2.5 py-1 rounded-lg border border-neutral-700 select-all">{{ jobId }}</span>
+            <button
+              type="button"
+              (click)="copyJobId()"
+              class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-semibold transition-all"
+              [class]="jobIdCopied
+                ? 'border-success/40 bg-success/10 text-success'
+                : 'border-neutral-700 bg-neutral-900 text-gray-400 hover:text-white hover:border-neutral-500'"
+            >
+              <i class="fas" [ngClass]="jobIdCopied ? 'fa-check' : 'fa-copy'"></i>
+              {{ jobIdCopied ? '¡Copiado!' : 'Copiar' }}
+            </button>
           </div>
+          <p class="text-[10px] text-gray-500 flex items-center gap-1">
+            <i class="fas fa-share-alt text-info"></i>
+            Guarda este ID para consultar la descarga desde otro navegador o dispositivo.
+          </p>
         </div>
 
         <!-- Estado Visual -->
