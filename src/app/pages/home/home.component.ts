@@ -12,6 +12,7 @@ import { InterestCalculatorComponent } from '../../components/interes-compuesto/
 import { WhisperTranscribeComponent } from '../../components/whisper-transcribe/whisper-transcribe.component';
 import { ListCleanerComponent } from '../../components/list-cleaner/list-cleaner.component';
 import { NumberToWordsComponent } from '../../components/number-to-words/number-to-words.component';
+import { YoutubeDownloaderComponent } from '../../components/youtube-downloader/youtube-downloader.component';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +29,8 @@ import { NumberToWordsComponent } from '../../components/number-to-words/number-
     InterestCalculatorComponent,
     WhisperTranscribeComponent,
     ListCleanerComponent,
-    NumberToWordsComponent
+    NumberToWordsComponent,
+    YoutubeDownloaderComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -254,6 +256,11 @@ export class HomeComponent {
       nombre: "Números a Letras",
       descripcion: "Convierte cifras numéricas a texto en español con formato personalizable para facturas y recibos.",
       handler: () => this.currentH.set("number-to-words")
+    },
+    {
+      nombre: "Descargador YouTube",
+      descripcion: "Descarga videos y listas de reproducción de YouTube en formato MP3 o MP4 con procesamiento en segundo plano.",
+      handler: () => this.currentH.set("youtube-downloader")
     }
   ]
 

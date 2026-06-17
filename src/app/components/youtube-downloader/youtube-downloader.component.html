@@ -1,0 +1,303 @@
+<div class="w-full text-white p-2 space-y-5">
+  
+  <!-- Info / Instrucciones de uso (Collapsible) -->
+  <details class="collapse bg-neutral-800/40 border border-neutral-700/60 rounded-xl">
+    <summary class="collapse-title text-sm font-semibold text-white cursor-pointer hover:text-success flex items-center gap-2">
+      <i class="fas fa-info-circle text-success"></i> ¿Cómo usar el Descargador de YouTube? (Haz clic para expandir)
+    </summary>
+    <div class="collapse-content text-sm text-gray-300 px-4 pb-4 leading-relaxed space-y-1">
+      <p>1. Pega la URL del vídeo o de la lista de reproducción de YouTube en el campo de texto.</p>
+      <p>2. Selecciona el **Modo de Descarga** (Vídeo con imágenes o solo Audio) y el formato que prefieras.</p>
+      <p>3. Elige la resolución máxima o calidad de descarga si seleccionaste modo Vídeo.</p>
+      <p>4. Marca la casilla **"Descargar Lista de Reproducción completa"** si ingresaste una playlist y deseas bajar todos los elementos.</p>
+      <p>5. Haz clic en **"Comenzar Descarga"** para iniciar el procesamiento en segundo plano del servidor.</p>
+      <p>6. Puedes cerrar esta ventana. Cuando el servidor termine de procesar el archivo, vuelve aquí y pulsa **"Descargar Archivo ZIP"**.</p>
+    </div>
+  </details>
+
+  <!-- CABECERA -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-neutral-700/60 pb-4">
+    <div>
+      <h2 class="text-xl font-bold flex items-center gap-2 text-white">
+        <i class="fab fa-youtube text-red-500 text-2xl animate-pulse"></i>
+        YouTube Media Downloader
+      </h2>
+      <p class="text-xs text-gray-400">Descarga vídeos y listas de reproducción completas de forma asíncrona.</p>
+    </div>
+  </div>
+
+  <!-- PANTALLA A: FORMULARIO DE DESCARGA -->
+  <div *ngIf="!jobId" class="space-y-5 animate-fade-in">
+    <!-- Alerta Informativa -->
+    <div class="bg-neutral-800/40 border border-neutral-700/60 text-gray-300 rounded-xl p-4 flex gap-3 items-start">
+      <i class="fas fa-info-circle text-success mt-0.5 text-base"></i>
+      <div class="text-xs space-y-1">
+        <span class="font-bold text-white block">Procesamiento Asíncrono del Servidor:</span>
+        <p>Los vídeos y listas se procesan en cola de fondo para evitar bloqueos del navegador. Puedes hacer clic en iniciar y volver más tarde.</p>
+      </div>
+    </div>
+
+    <!-- Formulario -->
+    <div class="space-y-4">
+      <!-- Input de URL -->
+      <div>
+        <label class="block text-xs font-semibold text-gray-300 mb-1.5">Enlace del Video o Lista de Reproducción</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-neutral-500">
+            <i class="fab fa-youtube text-lg"></i>
+          </span>
+          <input
+            type="text"
+            [(ngModel)]="youtubeUrl"
+            placeholder="https://www.youtube.com/watch?v=... o https://www.youtube.com/playlist?list=..."
+            class="input input-bordered w-full bg-neutral-900 border-neutral-700 text-white pl-10 focus:border-success focus:ring-success placeholder:text-neutral-500 text-sm font-mono"
+            [disabled]="loading"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Modo de Descarga -->
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1.5">Modo de Descarga</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              (click)="mode = 'video'; onModeChange()"
+              [class]="mode === 'video'
+                ? 'flex items-center justify-center gap-2 py-2 px-3 rounded-lg border-2 border-success bg-success/10 text-success text-xs font-bold transition-all hover:scale-[1.01]'
+                : 'flex items-center justify-center gap-2 py-2 px-3 rounded-lg border border-neutral-700 bg-neutral-900 text-gray-400 text-xs hover:text-white transition-all hover:scale-[1.01]'"
+              [disabled]="loading"
+            >
+              <i class="fas fa-video"></i> Video (MP4/MKV)
+            </button>
+            <button
+              type="button"
+              (click)="mode = 'audio'; onModeChange()"
+              [class]="mode === 'audio'
+                ? 'flex items-center justify-center gap-2 py-2 px-3 rounded-lg border-2 border-success bg-success/10 text-success text-xs font-bold transition-all hover:scale-[1.01]'
+                : 'flex items-center justify-center gap-2 py-2 px-3 rounded-lg border border-neutral-700 bg-neutral-900 text-gray-400 text-xs hover:text-white transition-all hover:scale-[1.01]'"
+              [disabled]="loading"
+            >
+              <i class="fas fa-music"></i> Audio (MP3/WAV)
+            </button>
+          </div>
+        </div>
+
+        <!-- Formato -->
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1.5" for="format-select">Formato de Salida</label>
+          <select
+            id="format-select"
+            name="format"
+            [(ngModel)]="format"
+            class="select select-bordered w-full bg-neutral-900 border-neutral-700 text-white focus:border-success text-xs"
+            [disabled]="loading"
+          >
+            <option *ngFor="let opt of formatOptions" [value]="opt.value">{{ opt.label }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Calidad (Solo para Modo Video) -->
+        <div *ngIf="mode === 'video'">
+          <label class="block text-xs font-semibold text-gray-300 mb-1.5" for="quality-select">Resolución máxima / Calidad</label>
+          <select
+            id="quality-select"
+            name="quality"
+            [(ngModel)]="quality"
+            class="select select-bordered w-full bg-neutral-900 border-neutral-700 text-white focus:border-success text-xs"
+            [disabled]="loading"
+          >
+            <option *ngFor="let opt of qualityOptions" [value]="opt.value">{{ opt.label }}</option>
+          </select>
+        </div>
+
+        <!-- Opción Playlist -->
+        <div class="flex items-center pt-2 md:pt-6">
+          <label class="relative flex items-center cursor-pointer select-none">
+            <input
+              type="checkbox"
+              [(ngModel)]="downloadPlaylist"
+              class="checkbox checkbox-success checkbox-sm bg-neutral-900 border-neutral-600 focus:ring-success"
+              [disabled]="loading"
+            />
+            <span class="ml-3 text-xs font-semibold text-gray-300">Descargar Lista de Reproducción completa</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje de Error en Formulario -->
+    <div *ngIf="error" class="bg-error/10 border border-error/25 text-error rounded-xl p-3 flex gap-2 items-center text-xs">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span>{{ error }}</span>
+    </div>
+
+    <!-- Botón de Envío -->
+    <div class="pt-2">
+      <button
+        type="button"
+        (click)="startDownload()"
+        class="w-full btn btn-success text-success-content font-bold py-3 text-base flex items-center justify-center gap-2 hover:scale-[1.01] transition-transform"
+        [disabled]="loading"
+      >
+        <span *ngIf="loading" class="loading loading-spinner"></span>
+        <i *ngIf="!loading" class="fas fa-cloud-download-alt text-lg"></i>
+        {{ loading ? 'Iniciando trabajo de descarga...' : 'Comenzar Descarga' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- PANTALLA B: SEGUIMIENTO DE PROGRESO (TRABAJO ACTIVO) -->
+  <div *ngIf="jobId" class="space-y-5 animate-scale-in">
+    <div class="bg-neutral-800/20 border border-neutral-700/60 rounded-xl p-5 space-y-5">
+      
+      <!-- Estado y Cabecera del Trabajo -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-neutral-700/60 pb-4">
+        <div>
+          <span class="text-[10px] text-gray-400 font-semibold tracking-wider uppercase">ID del Trabajo Activo</span>
+          <div class="text-xs font-mono text-white flex items-center gap-2 mt-0.5">
+            {{ jobId }}
+          </div>
+        </div>
+
+        <!-- Estado Visual -->
+        <div class="flex items-center gap-2">
+          <!-- Pending -->
+          <span *ngIf="status === 'pending'" class="badge badge-warning text-warning-content font-bold text-xs py-1 px-2.5 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+            En Cola
+          </span>
+
+          <!-- Downloading -->
+          <span *ngIf="status === 'downloading'" class="badge badge-info text-info-content font-bold text-xs py-1 px-2.5 flex items-center gap-1.5">
+            <i class="fas fa-spinner fa-spin"></i>
+            Descargando
+          </span>
+
+          <!-- Zipping -->
+          <span *ngIf="status === 'zipping'" class="badge badge-warning text-warning-content font-bold text-xs py-1 px-2.5 flex items-center gap-1.5">
+            <i class="fas fa-file-archive animate-bounce"></i>
+            Comprimiendo ZIP
+          </span>
+
+          <!-- Completed -->
+          <span *ngIf="status === 'completed'" class="badge badge-success text-success-content font-bold text-xs py-1 px-2.5 flex items-center gap-1.5">
+            <i class="fas fa-check-circle"></i>
+            Completado
+          </span>
+
+          <!-- Failed -->
+          <span *ngIf="status === 'failed'" class="badge badge-error text-error-content font-bold text-xs py-1 px-2.5 flex items-center gap-1.5">
+            <i class="fas fa-times-circle"></i>
+            Fallido
+          </span>
+        </div>
+      </div>
+
+      <!-- Alerta de Advertencia persistente durante descarga -->
+      <div *ngIf="status !== 'completed' && status !== 'failed'" class="bg-neutral-900/40 border border-neutral-700/30 text-gray-300 rounded-lg p-3 text-[11px] flex gap-2 items-center">
+        <i class="fas fa-exclamation-triangle text-warning"></i>
+        <span>
+          Guardamos el progreso. Puedes salir de esta página y regresar más tarde; la descarga continuará en el servidor.
+        </span>
+      </div>
+
+      <!-- Barra de Progreso y Detalles -->
+      <div class="space-y-3">
+        <div class="flex justify-between items-end text-xs">
+          <span class="font-semibold text-gray-300">Progreso General</span>
+          <span class="font-bold text-success text-sm font-mono">{{ displayProgress }}%</span>
+        </div>
+        
+        <!-- Barra -->
+        <div class="w-full bg-neutral-950 rounded-full h-3 overflow-hidden border border-neutral-700/50">
+          <div 
+            class="bg-success h-full transition-all duration-500 ease-out" 
+            [style.width.%]="displayProgress"
+          ></div>
+        </div>
+
+        <!-- Detalles del progreso (ETA, Item actual, etc.) -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-1 text-xs text-gray-400">
+          <div class="bg-neutral-900/40 p-2.5 rounded-lg border border-neutral-700/40 text-center">
+            <span class="block text-gray-500 font-semibold mb-0.5">Tiempo Restante (ETA)</span>
+            <span class="text-sm font-bold text-white font-mono">{{ eta || 'N/A' }}</span>
+          </div>
+
+          <div *ngIf="currentItem && totalItems" class="bg-neutral-900/40 p-2.5 rounded-lg border border-neutral-700/40 text-center">
+            <span class="block text-gray-500 font-semibold mb-0.5">Vídeos Procesados</span>
+            <span class="text-sm font-bold text-white font-mono">{{ currentItem }} de {{ totalItems }}</span>
+          </div>
+
+          <div class="bg-neutral-900/40 p-2.5 rounded-lg border border-neutral-700/40 text-center col-span-2 sm:col-span-1">
+            <span class="block text-gray-500 font-semibold mb-0.5">Vídeos Fallidos</span>
+            <span class="text-sm font-bold font-mono" [class.text-error]="failedCount > 0" [class.text-white]="failedCount === 0">
+              {{ failedCount }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de Videos Fallidos en Playlist -->
+      <div *ngIf="failedVideos.length > 0" class="space-y-2">
+        <span class="text-xs text-error font-bold block">Vídeos Omitidos / Con error:</span>
+        <div class="bg-error/5 border border-error/15 rounded-lg p-3 max-h-32 overflow-y-auto text-xs text-gray-400 space-y-1 scroll">
+          <div *ngFor="let vid of failedVideos; let idx = index" class="flex items-start gap-2">
+            <span class="text-error font-semibold font-mono">{{ idx + 1 }}.</span>
+            <span>
+              <strong class="text-white font-mono" *ngIf="vid.id">[{{ vid.id }}]</strong> 
+              {{ vid.reason }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensaje de Error en Trabajo -->
+      <div *ngIf="error" class="bg-error/10 border border-error/25 text-error-content rounded-lg p-4 flex gap-3 items-start text-xs">
+        <i class="fas fa-exclamation-triangle text-error mt-0.5"></i>
+        <div>
+          <span class="font-bold block text-white">Error del Servidor:</span>
+          {{ error }}
+        </div>
+      </div>
+
+      <!-- Botones de Acción según estado -->
+      <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-neutral-700/60">
+        <!-- Descargar ZIP (Solo si está completado) -->
+        <button
+          *ngIf="status === 'completed'"
+          type="button"
+          (click)="downloadFile()"
+          class="flex-grow btn btn-success text-success-content font-bold py-3 text-base flex items-center justify-center gap-2 hover:scale-[1.01] transition-transform"
+        >
+          <i class="fas fa-download"></i>
+          Descargar Archivo ZIP
+        </button>
+
+        <!-- Limpiar / Empezar otro -->
+        <button
+          *ngIf="status === 'completed' || status === 'failed'"
+          type="button"
+          (click)="cancelOrReset()"
+          class="btn btn-outline btn-success px-5 font-bold hover:scale-[1.01] transition-transform"
+        >
+          Nueva Descarga
+        </button>
+
+        <!-- Cancelar / Salir (Si sigue en progreso o en cola) -->
+        <button
+          *ngIf="status !== 'completed' && status !== 'failed'"
+          type="button"
+          (click)="cancelOrReset()"
+          class="flex-grow btn btn-outline btn-error hover:scale-[1.01] transition-transform"
+        >
+          Cancelar y Borrar Historial
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

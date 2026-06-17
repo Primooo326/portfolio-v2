@@ -26,7 +26,11 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         setTimeout(() => {
-          window.HSStaticMethods.autoInit();
+          try {
+            window.HSStaticMethods.autoInit();
+          } catch (e) {
+            console.warn('FlyonUI autoInit warning:', e);
+          }
         }, 100);
       }
     });

@@ -131,3 +131,8 @@
   containerClass="w-[900px] max-w-[95vw]" title="Convertidor de Números a Letras">
   <app-number-to-words></app-number-to-words>
 </app-modal>
+
+<app-modal [isVisible]="currentH() === 'youtube-downloader'" (visibleChange)="currentH.set('')"
+  containerClass="w-[900px] max-w-[95vw]" title="Descargador de YouTube">
+  <app-youtube-downloader></app-youtube-downloader>
+</app-modal>
