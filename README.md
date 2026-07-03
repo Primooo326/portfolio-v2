@@ -1,27 +1,78 @@
-# Portfolio
+# Portfolio — primooo.dev
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.0.
+Portfolio personal desarrollado con **Angular 17**, **Tailwind CSS** y **FlyonUI**. Incluye herramientas útiles como descargador de YouTube, transcripción con Whisper, compresor de imágenes, calculadora de interés compuesto, generador QR, y más.
 
-## Development server
+## Stack
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+| Capa        | Tecnología                        |
+| ----------- | --------------------------------- |
+| Frontend    | Angular 17, TypeScript, SCSS      |
+| Estilos     | Tailwind CSS 3, FlyonUI           |
+| Backend     | NestJS (repositorio separado)     |
+| Contenido   | Firebase Hosting / Docker + nginx |
 
-## Code scaffolding
+## Desarrollo
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```bash
+ng serve
+# http://localhost:4200/
+```
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```bash
+ng build --configuration production
+# salida: dist/portfolio/browser/
+```
 
-## Running unit tests
+## Despliegue con Docker
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### 1. Conectar el backend a la red interna
 
-## Running end-to-end tests
+El contenedor `youtube-downloader-app` (backend NestJS, puerto 3000) debe estar en la misma red Docker para que nginx enrute las llamadas `/api/*` sin salir a internet.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```bash
+docker network connect portfolio-network youtube-downloader-app
+```
 
-## Further help
+### 2. Construir y levantar
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```bash
+docker compose up -d --build
+```
+
+Esto expone `primooo.dev` en los puertos 80 y 443 con SSL vía Certbot.
+
+### 3. Recarga automática de certificados
+
+Para que nginx refleje los certificados renovados por Certbot:
+
+```bash
+echo 'docker exec portfolio-v2 nginx -s reload' | sudo tee /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
+sudo chmod +x /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
+```
+
+## Estructura del proyecto
+
+```
+src/
+├── app/
+│   ├── components/       # Componentes reutilizables
+│   │   ├── card-herramienta/
+│   │   ├── card-proyecto/
+│   │   ├── compressor-img/
+│   │   ├── footer/
+│   │   ├── interes-compuesto/
+│   │   ├── list-cleaner/
+│   │   ├── modal/
+│   │   ├── number-to-words/
+│   │   ├── qr-code/
+│   │   ├── timeline/
+│   │   ├── whisper-transcribe/
+│   │   └── youtube-downloader/
+│   ├── pages/
+│   │   └── home/         # Página principal (única ruta)
+│   └── app.routes.ts     # Definición de rutas
+├── environments/          # Configuración por entorno
+└── index.html
+```
