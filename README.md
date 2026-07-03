@@ -9,7 +9,7 @@ Portfolio personal desarrollado con **Angular 17**, **Tailwind CSS** y **FlyonUI
 | Frontend    | Angular 17, TypeScript, SCSS      |
 | Estilos     | Tailwind CSS 3, FlyonUI           |
 | Backend     | NestJS (repositorio separado)     |
-| Contenido   | Firebase Hosting / Docker + nginx |
+| Hosting     | Docker + nginx + serve            |
 
 ## Desarrollo
 
@@ -27,9 +27,26 @@ ng build --configuration production
 
 ## Despliegue con Docker
 
-### 1. Conectar el backend a la red interna
+### Arquitectura
 
-El contenedor `youtube-downloader-app` (backend NestJS, puerto 3000) debe estar en la misma red Docker para que nginx enrute las llamadas `/api/*` sin salir a internet.
+```
+                         docker-compose
+  ┌──────────────────────────────────────────────┐
+  │  portfolio-v2 (container)                    │
+  │                                              │
+  │  80  ──redirect 301──▶  443  ──proxy──▶  4200│
+  │  (nginx)                (nginx)      (serve) │
+  │                                │             │
+  │        ┌───────────────────────┘             │
+  │        ▼ proxy_pass /api/                    │
+  │   youtube-downloader-app:3000                │
+  │        (red interna Docker)                  │
+  └──────────────────────────────────────────────┘
+```
+
+nginx recibe en 80/443 y proxy reverse al `serve` (puerto 4200) que sirve los estáticos de Angular. Las llamadas a `/api/*` se enrutan internamente al backend NestJS sin salir a internet.
+
+### 1. Conectar el backend a la red interna
 
 ```bash
 docker network connect portfolio-network youtube-downloader-app
@@ -41,11 +58,7 @@ docker network connect portfolio-network youtube-downloader-app
 docker compose up -d --build
 ```
 
-Esto expone `primooo.dev` en los puertos 80 y 443 con SSL vía Certbot.
-
 ### 3. Recarga automática de certificados
-
-Para que nginx refleje los certificados renovados por Certbot:
 
 ```bash
 echo 'docker exec portfolio-v2 nginx -s reload' | sudo tee /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
