@@ -9,7 +9,7 @@ Portfolio personal desarrollado con **Angular 17**, **Tailwind CSS** y **FlyonUI
 | Frontend    | Angular 17, TypeScript, SCSS      |
 | Estilos     | Tailwind CSS 3, FlyonUI           |
 | Backend     | NestJS (repositorio separado)     |
-| Hosting     | Docker + nginx + serve            |
+| Hosting     | Docker + nginx host + serve       |
 
 ## Desarrollo
 
@@ -30,40 +30,38 @@ ng build --configuration production
 ### Arquitectura
 
 ```
-                         docker-compose
+                            host
   ┌──────────────────────────────────────────────┐
-  │  portfolio-v2 (container)                    │
-  │                                              │
-  │  80  ──redirect 301──▶  443  ──proxy──▶  4200│
-  │  (nginx)                (nginx)      (serve) │
-  │                                │             │
-  │        ┌───────────────────────┘             │
-  │        ▼ proxy_pass /api/                    │
-  │   youtube-downloader-app:3000                │
-  │        (red interna Docker)                  │
+  │  nginx (Certbot)   80 ──301──▶ 443           │
+  │       │                       │              │
+  │       └────── proxy ──────────┘              │
+  │                  │                           │
+  │           ┌──────┴──────┐                    │
+  │           ▼             ▼                    │
+  │     localhost:4200  localhost:3005           │
+  │     (container)    (youtube-downloader-app)  │
   └──────────────────────────────────────────────┘
 ```
 
-nginx recibe en 80/443 y proxy reverse al `serve` (puerto 4200) que sirve los estáticos de Angular. Las llamadas a `/api/*` se enrutan internamente al backend NestJS sin salir a internet.
+El **nginx del host** (con SSL de Certbot) recibe en 80/443 y proxy reverse al contenedor `portfolio-v2` (puerto 4200). Las llamadas a `/api/*` se enrutan a `localhost:3005` (backend NestJS), todo sin salir a internet.
 
-### 1. Conectar el backend a la red interna
-
-```bash
-docker network connect portfolio-network youtube-downloader-app
-```
-
-### 2. Construir y levantar
+### 1. Construir y levantar el contenedor
 
 ```bash
 docker compose up -d --build
 ```
 
-### 3. Recarga automática de certificados
+### 2. Configurar el host nginx
 
 ```bash
-echo 'docker exec portfolio-v2 nginx -s reload' | sudo tee /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
-sudo chmod +x /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
+sudo cp nginx.conf /etc/nginx/sites-available/primooo.dev
+sudo ln -sf /etc/nginx/sites-available/primooo.dev /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
 ```
+
+### 3. Recarga automática de certificados
+
+Certbot recarga nginx automáticamente al renovar, no requiere configuración adicional.
 
 ## Estructura del proyecto
 

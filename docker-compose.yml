@@ -4,13 +4,4 @@ services:
     container_name: portfolio-v2
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt:ro
-    networks:
-      - portfolio-network
-
-networks:
-  portfolio-network:
-    driver: bridge
+      - "4200:4200"
